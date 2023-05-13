@@ -113,13 +113,13 @@ class index_page implements renderable, templatable {
 
         $addquerybutton = '';
         if (has_capability('report/datawarehouse:managequeries', $this->context)) {
-            $addquerybutton = $output->single_button(report_datawarehouse_url('editquery.php', ['returnurl' => $this->returnurl]),
+            $addquerybutton = $output->single_button(report_datawarehouse_url('query.php', ['returnurl' => $this->returnurl]),
                 get_string('addquery', 'report_datawarehouse'), 'post', ['class' => 'mt-1 mb-3']);
         }
         $addbackendbutton = '';
         if (has_capability('report/datawarehouse:managebackends', $this->context)) {
             $addbackendbutton =
-                $output->single_button(report_datawarehouse_url('editbackend.php', ['returnurl' => $this->returnurl]),
+                $output->single_button(report_datawarehouse_url('backend.php', ['returnurl' => $this->returnurl]),
                     get_string('addbackend', 'report_datawarehouse'), 'post', ['class' => 'mt-1 mb-3']);
         }
         // phpcs:disable

@@ -35,8 +35,18 @@ $string['datawarehouse:view'] = 'View data warehouse reports';
 $string['description'] = 'Description';
 $string['enabled'] = 'Enabled';
 $string['name'] = 'Name';
+$string['note'] = 'Notes';
 $string['nobackendsavailable'] = 'No backends available';
 $string['noqueriesavailable'] = 'No queries available';
 $string['pluginname'] = 'Data warehouse reports';
+$string['querynote'] = '<ul>
+<li>The token <code>%%COURSEID%%</code> in the query will be replaced with the course id of the course the report is called in, before the query is executed. The same happens with <code>%%CMID%%</code> that will be replaced with the course module id.</li>
+<li>The query must include <code>WHERE cm.course=%%COURSEID%% AND cm.id = %%CMID%% AND ((uid.data IS NULL) OR (uid.data !=\'1\'))</code> at the end, whereas the uid.data value comes from an user_info_data field of which a value of 1 expresses that the user opts out of analytics.</li>
+<li>You cannot use the characters <code>:</code>, <code>;</code> or <code>?</code> in strings in your query.<ul>
+    <li>If you need them in output data (such as when outputting URLs), you can use the tokens <code>%%C%%</code>, <code>%%S%%</code> and <code>%%Q%%</code> respectively.</li>
+    <li>If you need them in input data (such as in a regular expression or when querying for the characters), you will need to use a database function to get the characters and concatenate them yourself. In Postgres, respectively these are CHR(58), CHR(59) and CHR(63); in MySQL CHAR(58), CHAR(59) and CHAR(63).</li>
+</ul></li>
+</ul>';
+$string['querysql'] = 'Query';
 $string['showonlythiscategory'] = 'Show only {$a}';
 $string['used'] = 'In use';
