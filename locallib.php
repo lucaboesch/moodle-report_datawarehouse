@@ -27,8 +27,20 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->libdir . '/validateurlsyntax.php');
 
+/**
+ * The marker for exceeded row limit.
+ */
 define('REPORT_DATAWAREHOUSE_LIMIT_EXCEEDED_MARKER', '-- ROW LIMIT EXCEEDED --');
 
+/**
+ * Execute a query
+ *
+ * @param string $sql the sql
+ * @param array|null $params the params
+ * @param int|null $limitnum the result limit
+ * @return moodle_recordset
+ * @throws dml_exception
+ */
 function report_datawarehouse_execute_query($sql, $params = null, $limitnum = null) {
     global $CFG, $DB;
 
@@ -48,6 +60,14 @@ function report_datawarehouse_execute_query($sql, $params = null, $limitnum = nu
     return $DB->get_recordset_sql($sql, $params, 0, $limitnum);
 }
 
+/**
+ * Prepare sql for a report
+ *
+ * @param stdClass $report the report
+ * @param int $timenow a time stamp
+ * @return array|string|string[]
+ * @throws Exception
+ */
 function report_datawarehouse_prepare_sql($report, $timenow) {
     global $USER;
     $sql = $report->querysql;
@@ -61,6 +81,7 @@ function report_datawarehouse_prepare_sql($report, $timenow) {
 
 /**
  * Extract all the placeholder names from the SQL.
+ *
  * @param string $sql The sql.
  * @return array placeholder names including the leading colon.
  */
@@ -85,6 +106,7 @@ function report_datawarehouse_get_query_placeholders_and_field_names(string $que
 
 /**
  * Return the type of form field to use for a placeholder, based on its name.
+ *
  * @param string $name the placeholder name.
  * @return string a formslib element type, for example 'text' or 'date_time_selector'.
  */
@@ -96,6 +118,14 @@ function report_datawarehouse_get_element_type($name) {
     return 'text';
 }
 
+/**
+ * Generate the CSV
+ *
+ * @param object $report report settings from the database.
+ * @param int $timenow a timestamp.
+ * @return mixed|null
+ * @throws dml_exception
+ */
 function report_datawarehouse_generate_csv($report, $timenow) {
     global $DB;
     $starttime = microtime(true);
@@ -186,6 +216,14 @@ function report_datawarehouse_is_integer($value) {
     return (string) (int) $value === (string) $value;
 }
 
+/**
+ * Get a report CSV name
+ *
+ * @param object $report report settings from the database.
+ * @param int $timenow a timestamp.
+ * @return array
+ * @throws Exception
+ */
 function report_datawarehouse_csv_filename($report, $timenow) {
     if ($report->runable == 'manual') {
         return report_datawarehouse_temp_csv_name($report->id, $timenow);
@@ -199,6 +237,13 @@ function report_datawarehouse_csv_filename($report, $timenow) {
     }
 }
 
+/**
+ * Get a report CSV name
+ *
+ * @param int $reportid The reportid.
+ * @param int $timestamp a timestamp.
+ * @return array
+ */
 function report_datawarehouse_temp_csv_name($reportid, $timestamp) {
     global $CFG;
     $path = 'admin_report_datawarehouse/temp/'.$reportid;
@@ -207,6 +252,13 @@ function report_datawarehouse_temp_csv_name($reportid, $timestamp) {
                  $timestamp);
 }
 
+/**
+ * Get the csv location and the time start of a report
+ *
+ * @param int $reportid The reportid.
+ * @param int $timestart a timestamp.
+ * @return array
+ */
 function report_datawarehouse_scheduled_csv_name($reportid, $timestart) {
     global $CFG;
     $path = 'admin_report_datawarehouse/'.$reportid;
@@ -215,6 +267,12 @@ function report_datawarehouse_scheduled_csv_name($reportid, $timestart) {
                  $timestart);
 }
 
+/**
+ * Get the accumulate.csv file name and 0 of a report
+ *
+ * @param int $reportid The reportid.
+ * @return array
+ */
 function report_datawarehouse_accumulating_csv_name($reportid) {
     global $CFG;
     $path = 'admin_report_datawarehouse/'.$reportid;
@@ -222,6 +280,12 @@ function report_datawarehouse_accumulating_csv_name($reportid) {
     return array($CFG->dataroot.'/'.$path.'/accumulate.csv', 0);
 }
 
+/**
+ * Get the times the reports were archived.
+ *
+ * @param object $report report settings from the database.
+ * @return array
+ */
 function report_datawarehouse_get_archive_times($report) {
     global $CFG;
     if ($report->runable == 'manual' || $report->singlerow) {
@@ -239,10 +303,25 @@ function report_datawarehouse_get_archive_times($report) {
     return $archivetimes;
 }
 
+/**
+ * Substitute time tokens
+ *
+ * @param string $sql the sql
+ * @param int $start a timestamp.
+ * @param int $end a timestamp.
+ * @return array|string|string[]
+ */
 function report_datawarehouse_substitute_time_tokens($sql, $start, $end) {
     return str_replace(array('%%STARTTIME%%', '%%ENDTIME%%'), array($start, $end), $sql);
 }
 
+/**
+ * Substitute user tokens
+ *
+ * @param string $sql the sql
+ * @param int $userid a user id
+ * @return array|string|string[]
+ */
 function report_datawarehouse_substitute_user_token($sql, $userid) {
     return str_replace('%%USERID%%', $userid, $sql);
 }
@@ -282,6 +361,12 @@ function report_datawarehouse_downloadurl($reportid, $params = []) {
     return $downloadurl;
 }
 
+/**
+ * Get the capability options.
+ *
+ * @return array
+ * @throws coding_exception
+ */
 function report_datawarehouse_capability_options() {
     return array(
         'report/datawarehouse:view' => get_string('anyonewhocanveiwthisreport', 'report_datawarehouse'),
@@ -290,6 +375,13 @@ function report_datawarehouse_capability_options() {
     );
 }
 
+/**
+ * Get the available type of reports given a super type.
+ *
+ * @param string|null $type the type of report
+ * @return array
+ * @throws coding_exception
+ */
 function report_datawarehouse_runable_options($type = null) {
     if ($type === 'manual') {
         return array('manual' => get_string('manual', 'report_datawarehouse'));
@@ -301,6 +393,11 @@ function report_datawarehouse_runable_options($type = null) {
     );
 }
 
+/**
+ * Get the options for the time for daily digests.
+ *
+ * @return array
+ */
 function report_datawarehouse_daily_at_options() {
     $time = array();
     for ($h = 0; $h < 24; $h++) {
@@ -310,33 +407,68 @@ function report_datawarehouse_daily_at_options() {
     return $time;
 }
 
+/**
+ * Get the email options.
+ *
+ * @return array
+ * @throws coding_exception
+ */
 function report_datawarehouse_email_options() {
     return array('emailnumberofrows' => get_string('emailnumberofrows', 'report_datawarehouse'),
             'emailresults' => get_string('emailresults', 'report_datawarehouse'),
     );
 }
 
+/**
+ * Get the bad words list.
+ *
+ * @return string[]
+ */
 function report_datawarehouse_bad_words_list() {
     return array('ALTER', 'CREATE', 'DELETE', 'DROP', 'GRANT', 'INSERT', 'INTO',
                  'TRUNCATE', 'UPDATE');
 }
 
+/**
+ * Check if a string contains bad words
+ *
+ * @param string $string the string to check
+ * @return false|int
+ */
 function report_datawarehouse_contains_bad_word($string) {
     return preg_match('/\b('.implode('|', report_datawarehouse_bad_words_list()).')\b/i', $string);
 }
 
+/**
+ * Delete a log
+ *
+ * @param int $id The id
+ * @throws dml_exception
+ */
 function report_datawarehouse_log_delete($id) {
     $event = \report_datawarehouse\event\query_deleted::create(
             array('objectid' => $id, 'context' => context_system::instance()));
     $event->trigger();
 }
 
+/**
+ * Edit a log
+ *
+ * @param int $id The id
+ * @throws dml_exception
+ */
 function report_datawarehouse_log_edit($id) {
     $event = \report_datawarehouse\event\query_edited::create(
             array('objectid' => $id, 'context' => context_system::instance()));
     $event->trigger();
 }
 
+/**
+ * View a log
+ *
+ * @param int $id The id
+ * @throws dml_exception
+ */
 function report_datawarehouse_log_view($id) {
     $event = \report_datawarehouse\event\query_viewed::create(
             array('objectid' => $id, 'context' => context_system::instance()));
@@ -469,6 +601,14 @@ function report_datawarehouse_display_row($row, $linkcolumns) {
     return $rowdata;
 }
 
+/**
+ * Get the time tag
+ *
+ * @param object $report report settings from the database.
+ * @param string $tag a tag
+ * @return string
+ * @throws coding_exception
+ */
 function report_datawarehouse_time_note($report, $tag) {
     if ($report->lastrun) {
         $a = new stdClass;
@@ -483,8 +623,14 @@ function report_datawarehouse_time_note($report, $tag) {
     return html_writer::tag($tag, $note, array('class' => 'admin_note'));
 }
 
-
-function report_datawarehouse_pretify_column_names($row, $querysql) {
+/**
+ * Prettify columns name
+ *
+ * @param string $row a row
+ * @param string $querysql the query sql
+ * @return array
+ */
+function report_datawarehouse_prettify_column_names($row, $querysql) {
     $colnames = [];
 
     foreach (get_object_vars($row) as $colname => $ignored) {
@@ -541,8 +687,16 @@ function report_datawarehouse_read_csv_row($handle) {
     return fgetcsv($handle, 0, ',', '"', $disablestupidphpescaping);
 }
 
+/**
+ * Start CSV output
+ *
+ * @param resource $handle the file pointer
+ * @param string $firstrow the first row
+ * @param object $report report settings from the database.
+ * @throws coding_exception
+ */
 function report_datawarehouse_start_csv($handle, $firstrow, $report) {
-    $colnames = report_datawarehouse_pretify_column_names($firstrow, $report->querysql);
+    $colnames = report_datawarehouse_prettify_column_names($firstrow, $report->querysql);
     if ($report->singlerow) {
         array_unshift($colnames, get_string('queryrundate', 'report_datawarehouse'));
     }
@@ -569,6 +723,14 @@ function report_datawarehouse_get_daily_time_starts($timenow, $at) {
         );
 }
 
+/**
+ * Get the start of the week.
+ *
+ * @param int $timenow a timestamp.
+ * @return array
+ * @throws coding_exception
+ * @throws dml_exception
+ */
 function report_datawarehouse_get_week_starts($timenow) {
     $dateparts = getdate($timenow);
 
@@ -587,6 +749,12 @@ function report_datawarehouse_get_week_starts($timenow) {
     );
 }
 
+/**
+ * Get the start of the month.
+ *
+ * @param int $timenow a timestamp.
+ * @return array
+ */
 function report_datawarehouse_get_month_starts($timenow) {
     $dateparts = getdate($timenow);
 
@@ -596,6 +764,15 @@ function report_datawarehouse_get_month_starts($timenow) {
     );
 }
 
+/**
+ * Get the start times of the reports.
+ *
+ * @param object $report report settings from the database.
+ * @param int $timenow a timestamp.
+ * @return array
+ * @throws coding_exception
+ * @throws dml_exception
+ */
 function report_datawarehouse_get_starts($report, $timenow) {
     switch ($report->runable) {
         case 'daily':
@@ -609,6 +786,12 @@ function report_datawarehouse_get_starts($report, $timenow) {
     }
 }
 
+/**
+ * Delete old temp files
+ *
+ * @param int $upto a time stamp
+ * @return int|void
+ */
 function report_datawarehouse_delete_old_temp_files($upto) {
     global $CFG;
 
@@ -662,6 +845,14 @@ function report_datawarehouse_validate_users($userids, $capability) {
     return null;
 }
 
+/**
+ * Get the 'no data' message
+ *
+ * @param object $report report settings from the database.
+ * @return stdClass
+ * @throws coding_exception
+ * @throws moodle_exception
+ */
 function report_datawarehouse_get_message_no_data($report) {
     // Construct subject.
     $subject = get_string('emailsubjectnodata', 'report_datawarehouse',
@@ -681,6 +872,15 @@ function report_datawarehouse_get_message_no_data($report) {
     return $message;
 }
 
+/**
+ * Get the appropriate message
+ *
+ * @param object $report report settings from the database.
+ * @param string $csvfilename the csv file name
+ * @return stdClass
+ * @throws coding_exception
+ * @throws moodle_exception
+ */
 function report_datawarehouse_get_message($report, $csvfilename) {
     $handle = fopen($csvfilename, 'r');
     $table = new html_table();
@@ -741,6 +941,15 @@ function report_datawarehouse_get_message($report, $csvfilename) {
     return $message;
 }
 
+/**
+ * Send out the email report
+ *
+ * @param object $report report settings from the database.
+ * @param string|null $csvfilename the csv file name
+ * @throws coding_exception
+ * @throws dml_exception
+ * @throws moodle_exception
+ */
 function report_datawarehouse_email_report($report, $csvfilename = null) {
     global $DB;
 
@@ -766,6 +975,13 @@ function report_datawarehouse_email_report($report, $csvfilename = null) {
     }
 }
 
+/**
+ * Get ready to run daily reports
+ *
+ * @param int $timenow a timestamp.
+ * @return array
+ * @throws dml_exception
+ */
 function report_datawarehouse_get_ready_to_run_daily_reports($timenow) {
     global $DB;
     $reports = $DB->get_records_select('report_datawarehouse_queries', "runable = ?", array('daily'), 'id');
@@ -810,7 +1026,7 @@ function report_datawarehouse_send_email_notification($recipient, $message) {
 /**
  * Check if the report is ready to run.
  *
- * @param object $report
+ * @param object $report report settings from the database.
  * @param int $timenow
  * @return boolean
  */
@@ -828,6 +1044,12 @@ function report_datawarehouse_is_daily_report_ready($report, $timenow) {
     return false;
 }
 
+/**
+ * Get the category options
+ *
+ * @return array
+ * @throws dml_exception
+ */
 function report_datawarehouse_category_options() {
     global $DB;
     return $DB->get_records_menu('report_datawarehouse_categories', null, 'name ASC', 'id, name');
@@ -836,9 +1058,9 @@ function report_datawarehouse_category_options() {
 /**
  * Copies a csv file to an optional custom directory or file path.
  *
- * @param object $report
- * @param integer $timenow
- * @param string $csvfilename
+ * @param object $report report settings from the database.
+ * @param integer $timenow a time stamp
+ * @param string|null $csvfilename the csv file name
  */
 function report_datawarehouse_copy_csv_to_customdir($report, $timenow, $csvfilename = null) {
 

@@ -20,7 +20,6 @@ namespace report_datawarehouse\event;
  * The backend_deleted event class.
  *
  * @package     report_datawarehouse
- * @query_category    event
  * @copyright   2023 Luca Bösch <luca.boesch@bfh.ch>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

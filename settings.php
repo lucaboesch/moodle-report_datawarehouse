@@ -18,7 +18,6 @@
  * Plugin administration pages are defined here.
  *
  * @package     report_datawarehouse
- * @query_category    admin
  * @copyright   2023 Luca Bösch <luca.boesch@bfh.ch>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

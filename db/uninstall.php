@@ -18,7 +18,6 @@
  * Code that is executed before the tables and data are dropped during the plugin uninstallation.
  *
  * @package     report_datawarehouse
- * @query_category    upgrade
  * @copyright   2023 Luca Bösch <luca.boesch@bfh.ch>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
