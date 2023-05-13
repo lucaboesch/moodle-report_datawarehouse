@@ -35,7 +35,7 @@ use core\persistent;
 class backend extends persistent {
 
     /** Table name for the persistent. */
-    const TABLE = 'report_datawarehouse_backends';
+    const TABLE = 'report_datawarehouse_bkends';
 
     /**
      * Return the definition of the properties of this model.

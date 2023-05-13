@@ -25,7 +25,6 @@
 namespace report_datawarehouse;
 
 use core\notification;
-use report_datawarehouse\query;
 
 /**
  * Class for manipulating with the query records.
@@ -88,8 +87,6 @@ class query_controller {
      */
     public function execute($action) {
 
-        $this->set_external_page();
-
         switch($action) {
             case self::ACTION_ADD:
             case self::ACTION_EDIT:
@@ -119,7 +116,7 @@ class query_controller {
      * Set external page for the manager.
      */
     protected function set_external_page() {
-        admin_externalpage_setup('quiz_datawarehouse/query');
+        admin_externalpage_setup('report_datawarehouse/query');
     }
 
     /**
@@ -128,7 +125,7 @@ class query_controller {
      * @param int $id
      * @param \stdClass|null $data
      *
-     * @return \quiz_datawarehouse\query
+     * @return \report_datawarehouse\query
      */
     protected function get_instance($id = 0, \stdClass $data = null) {
         return new query($id, $data);
@@ -145,7 +142,7 @@ class query_controller {
     }
 
     /**
-     * Return a list of queriessorted by the order defined in the admin interface
+     * Return a list of queries sorted by the order defined in the admin interface
      *
      * @return static[] The list of queries
      */
@@ -302,7 +299,8 @@ class query_controller {
         global $PAGE;
 
         // phpcs:disable
-/*      $this->header($this->get_view_heading());
+        /*
+        $this->header($this->get_view_heading());
         $this->print_add_button();
         $this->display_all_records();
 
@@ -310,7 +308,7 @@ class query_controller {
         $PAGE->requires->js_call_amd('report_datawarehouse/managequeries', 'setup');
 
         $this->footer();
-*/
+        */
         // phpcs:enable
     }
 

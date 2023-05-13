@@ -26,6 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['addbackend'] = 'Add new backend';
 $string['addquery'] = 'Add new query';
+$string['alloweduser'] = 'Allowed user';
 $string['availablebackends'] = 'Available backends';
 $string['availablequeries'] = 'Available queries';
 $string['categorycontent'] = '({$a->manual} on-demand, {$a->daily} daily, {$a->weekly} weekly, {$a->monthly} monthly)';
@@ -33,11 +34,16 @@ $string['datawarehouse:managebackends'] = 'Manage data warehouse report backends
 $string['datawarehouse:managequeries'] = 'Manage data warehouse report queries';
 $string['datawarehouse:view'] = 'View data warehouse reports';
 $string['description'] = 'Description';
+$string['editbackend'] = 'Edit backend';
+$string['editquery'] = 'Edit query';
 $string['enabled'] = 'Enabled';
 $string['name'] = 'Name';
 $string['note'] = 'Notes';
 $string['nobackendsavailable'] = 'No backends available';
 $string['noqueriesavailable'] = 'No queries available';
+$string['newbackend'] = 'New backend';
+$string['newquery'] = 'New query';
+$string['password'] = 'Password';
 $string['pluginname'] = 'Data warehouse reports';
 $string['querynote'] = '<ul>
 <li>The token <code>%%COURSEID%%</code> in the query will be replaced with the course id of the course the report is called in, before the query is executed. The same happens with <code>%%CMID%%</code> that will be replaced with the course module id.</li>
@@ -49,4 +55,6 @@ $string['querynote'] = '<ul>
 </ul>';
 $string['querysql'] = 'Query';
 $string['showonlythiscategory'] = 'Show only {$a}';
+$string['url'] = 'URL';
 $string['used'] = 'In use';
+$string['username'] = 'Username';

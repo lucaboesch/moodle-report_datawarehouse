@@ -25,7 +25,6 @@
 namespace report_datawarehouse;
 
 use core\notification;
-use report_datawarehouse\local\table\backend_list;
 
 /**
  * Class for manipulating with the backend records.
@@ -88,8 +87,6 @@ class backend_controller {
      */
     public function execute($action) {
 
-        $this->set_external_page();
-
         switch($action) {
             case self::ACTION_ADD:
             case self::ACTION_EDIT:
@@ -110,7 +107,7 @@ class backend_controller {
 
             case self::ACTION_VIEW:
             default:
-                $this->view();
+                $this->edit($action, optional_param('id', null, PARAM_INT));
                 break;
         }
     }
@@ -150,7 +147,7 @@ class backend_controller {
      * @return static[] The list of backends
      */
     public function get_sorted_backends_list() {
-        return backend::get_records([], 'sortorder');
+        return \report_datawarehouse\backend::get_records([], 'sortorder');
     }
 
     /**
@@ -203,7 +200,7 @@ class backend_controller {
      * @return string
      */
     public static function get_base_url() : string {
-        return '/report/datawarehouse/backend.php';
+        return '/report/datawarehouse/index.php';
     }
 
     /**
@@ -301,6 +298,8 @@ class backend_controller {
     protected function view() {
         global $PAGE;
 
+        // phpcs:disable
+        /*
         $this->header($this->get_view_heading());
         $this->print_add_button();
         $this->display_all_records();
@@ -309,6 +308,8 @@ class backend_controller {
         $PAGE->requires->js_call_amd('report_datawarehouse/managebackends', 'setup');
 
         $this->footer();
+        */
+        // phpcs:enable
     }
 
     /**
