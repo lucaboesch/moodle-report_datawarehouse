@@ -134,9 +134,9 @@ class index_page implements renderable, templatable {
             'addquerybutton' => $addquerybutton,
             'addbackendbutton' => $addbackendbutton,
             'queries' => (array) $querycategoriesdata,
-            'backends' => (array) $backendcategoriesdata
+            'backends' => (array) $backendcategoriesdata,
+            'sesskey' => sesskey()
         ];
-        file_put_contents('/Users/luca/Desktop/log0.txt', json_encode($data));
         return $data;
     }
 }

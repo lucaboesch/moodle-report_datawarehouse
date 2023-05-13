@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+/*// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -67,7 +67,7 @@ class query implements renderable, templatable {
      * @param bool $addnewquerybtn Show 'Add new query' button or not.
      * @param moodle_url|null $returnurl Return url.
      */
-    public function __construct(query_category $querycategory, context $context, bool $expandable = false, int $showquerycat = 0,
+/*    public function __construct(query_category $querycategory, context $context, bool $expandable = false, int $showquerycat = 0,
             int $hidequerycat = 0, bool $showonlythislink = false, bool $addnewquerybtn = true, moodle_url $returnurl = null) {
         $this->querycategory = $querycategory;
         $this->context = $context;
@@ -77,7 +77,7 @@ class query implements renderable, templatable {
         $this->showonlythislink = $showonlythislink;
         $this->addnewquerybtn = $addnewquerybtn;
         $this->returnurl = $returnurl ?? $this->category->get_url();
-    }
+    }*/
 
     /**
      * Export the data so it can be used as the context for a mustache template.
@@ -86,7 +86,7 @@ class query implements renderable, templatable {
      * @return array The data to be passed to mustache
      * @throws \coding_exception
      */
-    public function export_for_template(renderer_base $output) {
+/*    public function export_for_template(renderer_base $output) {
         $queriesdata = $this->category->get_queries_data();
 
         $querygroups = [];
@@ -127,27 +127,31 @@ class query implements renderable, templatable {
             'linkref' => $this->get_link_reference(),
             'statistic' => $this->querycategory->get_statistic(),
             'querygroups' => $querygroups,
-            'addquerybutton' => $addquerybutton
+            'addquerybutton' => $addquerybutton,
+            'sesskey' => sesskey(),
         ];
-    }
+    }*/
 
     /**
      * Get showing state of query_category. Default is hidden.
      *
      * @return string
      */
+/*
     private function get_showing_state(): string {
         $categoryid = $this->querycategory->get_id();
 
         return $querycategoryid == $this->showquerycat && $categoryid != $this->hidequerycat ? 'shown' : 'hidden';
     }
+*/
 
     /**
      * Get the link with showcat/hidecat parameter.
      *
      * @return string The url.
      */
-    private function get_link_reference(): string {
+/*
+     private function get_link_reference(): string {
         $categoryid = $this->category->get_id();
         if ($categoryid == $this->showcat) {
             $params = ['hidecat' => $categoryid];
@@ -157,4 +161,5 @@ class query implements renderable, templatable {
 
         return report_datawarehouse_url('index.php', $params)->out(false);
     }
+*/
 }

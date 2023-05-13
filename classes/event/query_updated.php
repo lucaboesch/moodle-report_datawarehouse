@@ -16,6 +16,8 @@
 
 namespace report_datawarehouse\event;
 
+use core\event\base;
+
 /**
  * The query_updated event class.
  *
@@ -25,5 +27,83 @@ namespace report_datawarehouse\event;
  */
 class query_updated extends base {
 
-    // For more information about the Events API please visit {@link https://docs.moodle.org/dev/Events_API}.
+    /**
+     * Create event with strict parameters.
+     *
+     * Define strict parameters to create event with instead of relying on internal validation of array. Better code practice.
+     * Easier for consumers of this class to know what data must be supplied and observers can have more trust in event data.
+     *
+     * @param \report_datawarehouse\query $query Report data warehouse query.
+     * @param \context_system $context Context system.
+     * @return base
+     */
+    public static function create_strict(\report_datawarehouse\query $query, \context_system $context) : base {
+        global $USER;
+        $tid = $query->get('id');
+
+        return self::create([
+            'userid' => $USER->id,
+            'objectid' => $tid,
+            'context' => $context,
+        ]);
+    }
+
+    /**
+     * Initialize the event data.
+     */
+    protected function init() {
+        $this->data['objecttable'] = 'report_datawarehouse_queries';
+        $this->data['crud'] = 'u';
+        $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
+    }
+
+    /**
+     * Get the name of the event.
+     *
+     * @return string Name of event.
+     */
+    public static function get_name() {
+        return get_string('event:queryupdated', 'report_datawarehouse');
+    }
+
+    /**
+     * Returns relevant URL.
+     * @return \moodle_url
+     */
+    public function get_url() {
+        $params = [
+            'id' => $this->objectid,
+            'action' => 'edit',
+        ];
+        return new \moodle_url('/report/datawarehouse/query.php', $params);
+    }
+
+    /**
+     * Returns non-localised event description with id's for admin use only.
+     *
+     * @return string Description.
+     */
+    public function get_description() {
+        return "The user with id '$this->userid' has updated a query with id '$this->objectid'.";
+    }
+
+    /**
+     * This is used when restoring course logs where it is required that we
+     * map the objectid to it's new value in the new course.
+     *
+     * @return array Mapping of object id.
+     */
+    public static function get_objectid_mapping() : array {
+        return array('db' => 'report_datawarehouse_queries', 'restore' => 'report_datawarehouse');
+    }
+
+    /**
+     * This is used when restoring course logs where it is required that we
+     * map the information in 'other' to it's new value in the new course.
+     *
+     * @return array List of mapping of other ids.
+     */
+    public static function get_other_mapping() : array {
+        return [];
+    }
 }

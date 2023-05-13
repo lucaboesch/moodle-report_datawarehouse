@@ -68,7 +68,7 @@
                     <td>{{^inuse}}{{#str}}yes{{/str}}{{/inuse}}{{#inuse}}{{#str}}no{{/str}}{{/inuse}}</td>
                     <td><a href="backend.php?id={{ id }}&amp;action=edit" class="action-icon">{{#pix}}
                         t/edit, core, {{#str}}edit{{/str}}{{/pix}}</a>
-                        <a href="backend.php?id={{ id }}&amp;action=delete" class="action-icon">{{#pix}}
+                        <a href="backend.php?id={{ id }}&amp;action=delete&sesskey={{sesskey}}" class="action-icon" data-action="backenddelete">{{#pix}}
                             t/delete, core, {{#str}}delete{{/str}}{{/pix}}</a>
                     </td>
                 </tr>
@@ -84,3 +84,9 @@
 {{#addbackendbutton}}
     {{{addbackendbutton}}}
 {{/addbackendbutton}}
+
+{{#js}}
+    require(['report_datawarehouse/managebackends'], function(manageBackends) {
+    manageBackends.setup();
+    });
+{{/js}}

@@ -147,7 +147,7 @@ class query_controller {
      * @return static[] The list of queries
      */
     public function get_sorted_queries_list() {
-        return \report_datawarehouse\query::get_records([], 'sortorder');
+        return query::get_records([], 'sortorder');
     }
 
     /**
@@ -155,7 +155,7 @@ class query_controller {
      * @return string
      */
     protected function get_create_button_text() : string {
-        return get_string('addquery', 'quiz_datawarehouse');
+        return get_string('addquery', 'report_datawarehouse');
     }
 
     /**
@@ -176,7 +176,7 @@ class query_controller {
      * @return string
      */
     protected function get_view_heading() : string {
-        return get_string('managequeries', 'quiz_datawarehouse');
+        return get_string('managequeries', 'report_datawarehouse');
     }
 
     /**
@@ -184,7 +184,7 @@ class query_controller {
      * @return string
      */
     protected function get_new_heading() : string {
-        return get_string('newquery', 'quiz_datawarehouse');
+        return get_string('newquery', 'report_datawarehouse');
     }
 
     /**
@@ -192,7 +192,7 @@ class query_controller {
      * @return string
      */
     protected function get_edit_heading() : string {
-        return get_string('editquery', 'quiz_datawarehouse');
+        return get_string('editquery', 'report_datawarehouse');
     }
 
     /**
@@ -200,7 +200,7 @@ class query_controller {
      * @return string
      */
     public static function get_base_url() : string {
-        return '/report/datawarehouse/index.php';
+        return '/report/datawarehouse/query.php';
     }
 
     /**
@@ -222,7 +222,7 @@ class query_controller {
         $form = $this->get_form($instance);
 
         if ($form->is_cancelled()) {
-            redirect(new \moodle_url(static::get_base_url()));
+            redirect(new \moodle_url('/report/datawarehouse/index.php'));
         } else if ($data = $form->get_data()) {
             unset($data->submitbutton);
             try {
@@ -251,7 +251,7 @@ class query_controller {
             } catch (\Exception $e) {
                 notification::error($e->getMessage());
             }
-            redirect(new \moodle_url(static::get_base_url()));
+            redirect(new \moodle_url('/report/datawarehouse/index.php'));
         } else {
             if (empty($instance)) {
                 $this->header($this->get_new_heading());
@@ -285,10 +285,10 @@ class query_controller {
                 \context_system::instance()
             )->trigger();
 
-            redirect(new \moodle_url(static::get_base_url()));
+            redirect(new \moodle_url('/report/datawarehouse/index.php'));
         } else {
-            notification::warning(get_string('cantdelete', 'report_datawarehouse'));
-            redirect(new \moodle_url(static::get_base_url()));
+            notification::warning(get_string('cantdeletequery', 'report_datawarehouse'));
+            redirect(new \moodle_url('/report/datawarehouse/index.php'));
         }
     }
 
@@ -298,8 +298,6 @@ class query_controller {
     protected function view() {
         global $PAGE;
 
-        // phpcs:disable
-        /*
         $this->header($this->get_view_heading());
         $this->print_add_button();
         $this->display_all_records();
@@ -308,8 +306,6 @@ class query_controller {
         $PAGE->requires->js_call_amd('report_datawarehouse/managequeries', 'setup');
 
         $this->footer();
-        */
-        // phpcs:enable
     }
 
     /**

@@ -200,7 +200,7 @@ class backend_controller {
      * @return string
      */
     public static function get_base_url() : string {
-        return '/report/datawarehouse/index.php';
+        return '/report/datawarehouse/backend.php';
     }
 
     /**
@@ -222,7 +222,7 @@ class backend_controller {
         $form = $this->get_form($instance);
 
         if ($form->is_cancelled()) {
-            redirect(new \moodle_url(static::get_base_url()));
+            redirect(new \moodle_url('/report/datawarehouse/index.php'));
         } else if ($data = $form->get_data()) {
             unset($data->submitbutton);
             try {
@@ -251,7 +251,7 @@ class backend_controller {
             } catch (\Exception $e) {
                 notification::error($e->getMessage());
             }
-            redirect(new \moodle_url(static::get_base_url()));
+            redirect(new \moodle_url('/report/datawarehouse/index.php'));
         } else {
             if (empty($instance)) {
                 $this->header($this->get_new_heading());
@@ -285,10 +285,10 @@ class backend_controller {
                 \context_system::instance()
             )->trigger();
 
-            redirect(new \moodle_url(static::get_base_url()));
+            redirect(new \moodle_url('/report/datawarehouse/index.php'));
         } else {
-            notification::warning(get_string('cantdelete', 'report_datawarehouse'));
-            redirect(new \moodle_url(static::get_base_url()));
+            notification::warning(get_string('cantdeletebackend', 'report_datawarehouse'));
+            redirect(new \moodle_url('/report/datawarehouse/index.php'));
         }
     }
 
@@ -296,7 +296,6 @@ class backend_controller {
      * Execute view action.
      */
     protected function view() {
-        global $PAGE;
 
         // phpcs:disable
         /*

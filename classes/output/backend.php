@@ -132,7 +132,8 @@ class backend implements renderable, templatable {
             'statistic' => $this->category->get_statistic(),
             'backendgroups' => $backendgroups,
             'backends' => $backends,
-            'addbackendbutton' => $addbackendbutton
+            'addbackendbutton' => $addbackendbutton,
+            'sesskey' => sesskey()
         ];
     }
 

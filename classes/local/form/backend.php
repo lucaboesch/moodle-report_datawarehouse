@@ -39,7 +39,6 @@ class backend extends \core\form\persistent {
      * Form definition.
      */
     protected function definition() {
-        global $CFG;
 
         $mform = $this->_form;
 
