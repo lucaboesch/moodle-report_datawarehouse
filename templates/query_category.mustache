@@ -48,7 +48,7 @@
 }}
 
 <div class="csql_category csql_category{{#expandable}}{{show}}{{/expandable}}">
-    <h2>
+    <h4>
         {{#expandable}}
             <a href="{{linkref}}" class="categoryname">{{name}}</a>
         {{/expandable}}
@@ -68,7 +68,7 @@
         {{#showonlythislink}}
             <a href="{{url}}" class="view-category">{{#str}}showonlythiscategory, report_datawarehouse, {{name}}{{/str}}</a>
         {{/showonlythislink}}
-    </h2>
+    </h4>
     <div class="csql_category_reports">
         {{#querygroups}}
             {{#type}}
@@ -82,8 +82,8 @@
             {{/queries}}
         {{/querygroups}}
         {{^querygroups}}
-            <h3>{{#str}}availablereports, report_datawarehouse{{/str}}</h3>
-            <p>{{#str}}noreportsavailable, report_datawarehouse{{/str}}</p>
+            <h3>{{#str}}availablequeries, report_datawarehouse{{/str}}</h3>
+            <p>{{#str}}noqueriesavailable, report_datawarehouse{{/str}}</p>
         {{/querygroups}}
     </div>
 </div>

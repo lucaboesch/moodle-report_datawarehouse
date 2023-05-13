@@ -22,7 +22,7 @@ use renderable;
 use templatable;
 use renderer_base;
 use report_datawarehouse\local\backend as report_backend;
-use report_datawarehouse\local\query_category as report_category;
+use report_datawarehouse\local\backend_category as backend_category;
 
 /**
  * Backend renderable class.
@@ -32,7 +32,7 @@ use report_datawarehouse\local\query_category as report_category;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backend implements renderable, templatable {
-    /** @var report_category Category object. */
+    /** @var backend_category Backend category object. */
     private $category;
 
     /** @var context Context. */
@@ -58,7 +58,7 @@ class backend implements renderable, templatable {
 
     /** Create the query_category renderable object.
      *
-     * @param report_category $category Category object.
+     * @param backend_category $category Category object.
      * @param context $context Context to check the permission.
      * @param bool $expandable Can the query_category expanse/collapse?
      * @param int $showcat Shown query_category id from optional param
@@ -67,7 +67,7 @@ class backend implements renderable, templatable {
      * @param bool $addnewbackendbtn Show 'Add new backend' button or not.
      * @param moodle_url|null $returnurl Return url.
      */
-    public function __construct(report_category $category, context $context, bool $expandable = false, int $showcat = 0,
+    public function __construct(backend_category $category, context $context, bool $expandable = false, int $showcat = 0,
             int $hidecat = 0, bool $showonlythislink = false, bool $addnewbackendbtn = true, moodle_url $returnurl = null) {
         $this->category = $category;
         $this->context = $context;
@@ -108,6 +108,9 @@ class backend implements renderable, templatable {
                 'helpicon' => $output->help_icon($backendgroup['type'] . 'header', 'report_datawarehouse'),
                 'backends' => $backends
             ];
+            $backends[] = [
+
+            ];
         }
 
         $addbackendbutton = '';
@@ -115,7 +118,7 @@ class backend implements renderable, templatable {
             $addnewbackendurl = report_datawarehouse_url('editbackend.php', ['categoryid' => $this->category->get_id(),
                 'returnurl' => $this->returnurl->out_as_local_url(false)]);
             $addbackendbutton = $output->single_button($addnewbackendurl, get_string('addbackend', 'report_datawarehouse'), 'post',
-                                        ['class' => 'mb-1']);
+                                        ['class' => 'mt-1 mb-3']);
         }
 
         return [
@@ -128,6 +131,7 @@ class backend implements renderable, templatable {
             'linkref' => $this->get_link_reference(),
             'statistic' => $this->category->get_statistic(),
             'backendgroups' => $backendgroups,
+            'backends' => $backends,
             'addbackendbutton' => $addbackendbutton
         ];
     }

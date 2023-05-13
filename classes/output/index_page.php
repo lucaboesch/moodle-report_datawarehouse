@@ -100,36 +100,27 @@ class index_page implements renderable, templatable {
      */
     public function export_for_template(renderer_base $output) {
         $querycategoriesdata = [];
-        $groupedqueries = utils::group_queries_by_query_category($this->queries);
-        foreach ($this->querycategories as $querycategory) {
-            $localquerycategory = new local_query_category($querycategory);
-            $queries = $groupedqueries[$querycategory->id] ?? [];
-            $localquerycategory->load_queries_data($queries);
-            $querycategorywidget = new query_category($localquerycategory, $this->context, true, $this->showquerycat,
-                $this->hidequerycat, true, false, $this->returnurl);
-            $querycategoriesdata[] = ['query_category' => $output->render($querycategorywidget)];
+        $groupedqueries = $this->queries;
+        foreach ($groupedqueries as $queries) {
+            $querycategoriesdata[] = $queries;
         }
+
         $backendcategoriesdata = [];
-        $groupedbackends = utils::group_backends_by_backend_category($this->backends);
-        foreach ($this->backendcategories as $backendcategory) {
-            $localbackendcategory = new local_backend_category($backendcategory);
-            $backends = $groupedbackends[$backendcategory->id] ?? [];
-            $localbackendcategory->load_backends_data($backends);
-            $backendcategorywidget = new backend_category($localbackendcategory, $this->context, true, $this->showquerycat,
-                $this->hidequerycat, true, false, $this->returnurl);
-            $backendcategoriesdata[] = ['backend_category' => $output->render($backendcategorywidget)];
+        $groupedbackends = $this->backends;
+        foreach ($groupedbackends as $backend) {
+            $backendcategoriesdata[] = $backend;
         }
 
         $addquerybutton = '';
         if (has_capability('report/datawarehouse:managequeries', $this->context)) {
             $addquerybutton = $output->single_button(report_datawarehouse_url('editquery.php', ['returnurl' => $this->returnurl]),
-                get_string('addquery', 'report_datawarehouse'), 'post', ['class' => 'mb-1']);
+                get_string('addquery', 'report_datawarehouse'), 'post', ['class' => 'mt-1 mb-3']);
         }
         $addbackendbutton = '';
         if (has_capability('report/datawarehouse:managebackends', $this->context)) {
             $addbackendbutton =
                 $output->single_button(report_datawarehouse_url('editbackend.php', ['returnurl' => $this->returnurl]),
-                    get_string('addbackend', 'report_datawarehouse'), 'post', ['class' => 'mb-1']);
+                    get_string('addbackend', 'report_datawarehouse'), 'post', ['class' => 'mt-1 mb-3']);
         }
         // phpcs:disable
         /*
@@ -139,11 +130,13 @@ class index_page implements renderable, templatable {
                 }
         */
         // phpcs:enable
-
         $data = [
             'addquerybutton' => $addquerybutton,
-            'addbackendbutton' => $addbackendbutton
+            'addbackendbutton' => $addbackendbutton,
+            'queries' => (array) $querycategoriesdata,
+            'backends' => (array) $backendcategoriesdata
         ];
+        file_put_contents('/Users/luca/Desktop/log0.txt', json_encode($data));
         return $data;
     }
 }

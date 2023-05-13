@@ -111,6 +111,8 @@ class query_category implements renderable, templatable {
             ];
         }
 
+        // phpcs:disable
+/*
         $addquerybutton = '';
         if ($this->addnewquerybtn && has_capability('report/customsql:definequeries', $this->context)) {
             $addnewqueryurl = report_datawarehouse_url('edit.php', ['categoryid' => $this->category->get_id(),
@@ -118,6 +120,8 @@ class query_category implements renderable, templatable {
             $addquerybutton = $output->single_button($addnewqueryurl, get_string('addreport', 'report_datawarehouse'), 'post',
                                         ['class' => 'mb-1']);
         }
+*/
+        // phpcs:enable
 
         return [
             'id' => $this->querycategory->get_id(),

@@ -47,44 +47,38 @@
     }
 }}
 
-<div class="csql_category csql_category{{#expandable}}{{show}}{{/expandable}}">
-    <h3>
-        {{#expandable}}
-            <a href="{{linkref}}" class="categoryname">{{name}}</a>
-        {{/expandable}}
-        {{^expandable}}
-            {{{name}}}
-        {{/expandable}}
-        {{#statistic}}
-            <span class="reportcounts">
-                {{#str}}categorycontent, report_datawarehouse, {
-                                                                "manual": {{#quote}}{{manual}}{{/quote}},
-                                                                "daily": {{#quote}}{{daily}}{{/quote}},
-                                                                "weekly": {{#quote}}{{weekly}}{{/quote}},
-                                                                "monthly": {{#quote}}{{monthly}}{{/quote}}
-                                                            }{{/str}}
-            </span>
-        {{/statistic}}
-        {{#showonlythislink}}
-            <a href="{{url}}" class="view-category">{{#str}}showonlythiscategory, report_datawarehouse, {{name}}{{/str}}</a>
-        {{/showonlythislink}}
-    </h3>
-    <div class="csql_category_reports">
-        {{#querygroups}}
-            {{#type}}
-                <h4>
-                    {{title}}
-                    {{{helpicon}}}
-                </h4>
-            {{/type}}
+<div>
+    <div>
+        <h4>{{#str}}availablequeries, report_datawarehouse{{/str}}</h4>
+        <table class="flexible table table-striped table-hover generaltable admintable">
+            <thead>
+            <tr>
+                <th>{{#str}}name, report_datawarehouse{{/str}}</th>
+                <th>{{#str}}description, report_datawarehouse{{/str}}</th>
+                <th>{{#str}}enabled, report_datawarehouse{{/str}}</th>
+                <th>{{#str}}used, report_datawarehouse{{/str}}</th>
+                <th>{{#str}}actions{{/str}}</th>
+            </tr>
+            </thead>
+            <tbody>
             {{#queries}}
-                {{{categoryqueryitem}}}
+                <tr>
+                    <td><a href="query.php?id={{ id }}&amp;action=edit">{{ name }}</a></td>
+                    <td>{{ description }}</td>
+                    <td>{{#enabled}}{{#str}}yes{{/str}}{{/enabled}}{{^enabled}}{{#str}}no{{/str}}{{/enabled}}</td>
+                    <td>{{^inuse}}{{#str}}yes{{/str}}{{/inuse}}{{#inuse}}{{#str}}no{{/str}}{{/inuse}}</td>
+                    <td><a href="query.php?id={{ id }}&amp;action=edit" class="action-icon">{{#pix}}
+                        t/edit, core, {{#str}}edit{{/str}}{{/pix}}</a>
+                        <a href="query.php?id={{ id }}&amp;action=delete" class="action-icon">{{#pix}}
+                            t/delete, core, {{#str}}delete{{/str}}{{/pix}}</a>
+                    </td>
+                </tr>
             {{/queries}}
-        {{/querygroups}}
-        {{^querygroups}}
-            <h4>{{#str}}availablequeries, report_datawarehouse{{/str}}</h4>
+            </tbody>
+        </table>
+        {{^queries}}
             <p>{{#str}}noqueriesavailable, report_datawarehouse{{/str}}</p>
-        {{/querygroups}}
+        {{/queries}}
     </div>
 </div>
 

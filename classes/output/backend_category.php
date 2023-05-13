@@ -111,13 +111,17 @@ class backend_category implements renderable, templatable {
             ];
         }
 
-        $addbackendbutton = '';
-        if ($this->addnewbackendbtn && has_capability('report/customsql:definequeries', $this->context)) {
-            $addnewbackendurl = report_datawarehouse_url('edit.php', ['categoryid' => $this->category->get_id(),
-                'returnurl' => $this->returnurl->out_as_local_url(false)]);
-            $addbackendbutton = $output->single_button($addnewbackendurl, get_string('addreport', 'report_datawarehouse'), 'post',
-                                        ['class' => 'mb-1']);
-        }
+        // phpcs:disable
+        /*
+                $addbackendbutton = '';
+                if ($this->addnewbackendbtn && has_capability('report/customsql:definequeries', $this->context)) {
+                    $addnewbackendurl = report_datawarehouse_url('edit.php', ['categoryid' => $this->category->get_id(),
+                        'returnurl' => $this->returnurl->out_as_local_url(false)]);
+                    $addbackendbutton = $output->single_button($addnewbackendurl, get_string('addreport', 'report_datawarehouse'), 'post',
+                                                ['class' => 'mb-1']);
+                }
+        */
+        // phpcs:enable
 
         return [
             'id' => $this->backendcategory->get_id(),

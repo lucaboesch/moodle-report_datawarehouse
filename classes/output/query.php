@@ -32,8 +32,8 @@ use report_datawarehouse\local\query_category as report_category;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class query implements renderable, templatable {
-    /** @var report_category Category object. */
-    private $category;
+    /** @var query_category Category object. */
+    private $querycategory;
 
     /** @var context Context. */
     private $context;
@@ -56,7 +56,6 @@ class query implements renderable, templatable {
     /** @var bool Show 'Add new query' button or not. */
     private $addnewquerybtn;
 
-    /**
     /** Create the query_category renderable object.
      *
      * @param query_category $querycategory Category object.
@@ -88,7 +87,6 @@ class query implements renderable, templatable {
      * @throws \coding_exception
      */
     public function export_for_template(renderer_base $output) {
-
         $queriesdata = $this->category->get_queries_data();
 
         $querygroups = [];
@@ -116,18 +114,18 @@ class query implements renderable, templatable {
             $addnewqueryurl = report_datawarehouse_url('edit.php', ['categoryid' => $this->category->get_id(),
                 'returnurl' => $this->returnurl->out_as_local_url(false)]);
             $addquerybutton = $output->single_button($addnewqueryurl, get_string('addreport', 'report_datawarehouse'), 'post',
-                                        ['class' => 'mb-1']);
+                                        ['class' => 'mt-1 mb-3']);
         }
 
         return [
-            'id' => $this->category->get_id(),
-            'name' => $this->category->get_name(),
+            'id' => $this->querycategory->get_id(),
+            'name' => $this->querycategory->get_name(),
             'expandable' => $this->expandable,
             'show' => $this->get_showing_state(),
             'showonlythislink' => $this->showonlythislink,
-            'url' => $this->category->get_url()->out(false),
+            'url' => $this->querycategory->get_url()->out(false),
             'linkref' => $this->get_link_reference(),
-            'statistic' => $this->category->get_statistic(),
+            'statistic' => $this->querycategory->get_statistic(),
             'querygroups' => $querygroups,
             'addquerybutton' => $addquerybutton
         ];
@@ -139,9 +137,9 @@ class query implements renderable, templatable {
      * @return string
      */
     private function get_showing_state(): string {
-        $categoryid = $this->category->get_id();
+        $categoryid = $this->querycategory->get_id();
 
-        return $categoryid == $this->showcat && $categoryid != $this->hidecat ? 'shown' : 'hidden';
+        return $querycategoryid == $this->showquerycat && $categoryid != $this->hidequerycat ? 'shown' : 'hidden';
     }
 
     /**

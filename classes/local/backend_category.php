@@ -56,7 +56,9 @@ class backend_category {
     public function load_backends_data(array $backends): void {
         $statistic = [];
         $backendsdata = [];
-        foreach (report_datawarehouse_runable_options() as $type => $description) {
+
+        // phpcs:disable
+/*        foreach (report_datawarehouse_runable_options() as $type => $description) {
             $fitleredbackends = utils::get_number_of_report_by_type($backends, $type);
             $statistic[$type] = count($fitleredbackends);
             if ($fitleredbackends) {
@@ -66,6 +68,8 @@ class backend_category {
                 ];
             }
         }
+*/
+        // phpcs:enable
         $this->backendsdata = $backendsdata;
         $this->statistic = $statistic;
     }
