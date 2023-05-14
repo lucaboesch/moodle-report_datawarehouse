@@ -1,0 +1,88 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template report_datawarehouse/run_category
+
+    Template to render a query_category.
+
+    Classes required for JS:
+    * none
+
+    Data attributes required for JS:
+    * none
+
+    Context variables required for this template:
+    * name Category name.
+
+    Example context (json):
+    {
+        "id": 1,
+        "name": "query_category 1",
+        "expandable": false,
+        "show": "shown",
+        "showonlythislink": "true",
+        "url": "https://example.com/report_datawarehouse/category.php?id=1",
+        "linkref": "https://example.com/report_datawarehouse/index.php?hidecat=1",
+        "statistic": {
+            "manual": 1,
+            "daily": 2,
+            "weekly": 3,
+            "monthly": 4
+        },
+        "querygroups": []
+    }
+}}
+
+<div>
+    <div>
+        <h4>{{#str}}availableruns, report_datawarehouse{{/str}}</h4>
+        <table class="flexible table table-striped table-hover generaltable admintable">
+            <thead>
+            <tr>
+                <th>{{#str}}query, report_datawarehouse{{/str}}</th>
+                <th>{{#str}}backend, report_datawarehouse{{/str}}</th>
+                <th>{{#str}}courseid, report_datawarehouse{{/str}}</th>
+                <th>{{#str}}coursemoduleid, report_datawarehouse{{/str}}</th>
+                {{#allowmanage}}<th>{{#str}}actions{{/str}}</th>{{/allowmanage}}
+            </tr>
+            </thead>
+            <tbody>
+            {{#runs}}
+                <tr>
+                    <td>{{#allowmanage}}<a href="run.php?id={{ id }}&amp;action=edit">{{/allowmanage}}{{ query }}{{#allowmanage}}</a>{{/allowmanage}}</td>
+                    <td>{{ backend }}</td>
+                    <td>{{ courseid }}</td>
+                    <td>{{ cmid }}</td>
+                </tr>
+            {{/runs}}
+            </tbody>
+        </table>
+        {{^runs}}
+            <p>{{#str}}norunsavailable, report_datawarehouse{{/str}}</p>
+        {{/runs}}
+    </div>
+</div>
+
+{{#addrunbutton}}
+    {{{addrunbutton}}}
+{{/addrunbutton}}
+
+{{#js}}
+    require(['report_datawarehouse/manageruns'], function(manageRuns) {
+    manageRuns.setup();
+    });
+{{/js}}

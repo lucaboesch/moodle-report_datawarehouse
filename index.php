@@ -54,13 +54,14 @@ $backendcategories[0]->id = 1;
 $backendcategories[0]->name = 'Dummy category';
 $queries = $DB->get_records('report_datawarehouse_queries', null, 'sortorder');
 $backends = $DB->get_records('report_datawarehouse_bkends', null, 'sortorder');
+$runs = $DB->get_records('report_datawarehouse_runs', null, 'sortorder');
 $showquerycat = optional_param('showquerycat', 0, PARAM_INT);
 $hidequerycat = optional_param('hidequerycat', 0, PARAM_INT);
 $showbackendcat = optional_param('showbackendcat', 0, PARAM_INT);
 $hidebackendcat = optional_param('hidebackendcat', 0, PARAM_INT);
 $returnurl = report_datawarehouse_url('index.php');
 
-$widget = new \report_datawarehouse\output\index_page($querycategories, $backendcategories, $queries, $backends, $context,
+$widget = new \report_datawarehouse\output\index_page($querycategories, $backendcategories, $queries, $backends, $runs, $context,
     $returnurl, $showquerycat, $hidequerycat, $showbackendcat, $hidebackendcat);
 $output = $PAGE->get_renderer('report_datawarehouse');
 

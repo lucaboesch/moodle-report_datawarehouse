@@ -60,7 +60,7 @@ class backend_disabled extends base {
      * Initialize the event data.
      */
     protected function init() {
-        $this->data['objecttable'] = 'report_datawarehouse_queries';
+        $this->data['objecttable'] = 'report_datawarehouse_bkends';
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
     }

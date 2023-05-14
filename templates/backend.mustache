@@ -56,21 +56,21 @@
                 <th>{{#str}}description, report_datawarehouse{{/str}}</th>
                 <th>{{#str}}enabled, report_datawarehouse{{/str}}</th>
                 <th>{{#str}}used, report_datawarehouse{{/str}}</th>
-                {{#allowmanage}}<th>{{#str}}actions{{/str}}</th>{{/allowmanage}}
+                {{#allowmanagebackends}}<th>{{#str}}actions{{/str}}</th>{{/allowmanagebackends}}
             </tr>
             </thead>
             <tbody>
             {{#backends}}
                 <tr>
-                    <td>{{#allowmanage}}<a href="backend.php?id={{ id }}&amp;action=edit">{{/allowmanage}}{{ name }}{{#allowmanage}}</a>{{/allowmanage}}</td>
+                    <td>{{#allowmanagebackends}}<a href="backend.php?id={{ id }}&amp;action=edit">{{/allowmanagebackends}}{{ name }}{{#allowmanagebackends}}</a>{{/allowmanagebackends}}</td>
                     <td>{{ description }}</td>
                     <td>{{#enabled}}{{#str}}yes{{/str}}{{/enabled}}{{^enabled}}{{#str}}no{{/str}}{{/enabled}}</td>
                     <td>{{^inuse}}{{#str}}yes{{/str}}{{/inuse}}{{#inuse}}{{#str}}no{{/str}}{{/inuse}}</td>
-                    {{#allowmanage}}<td><a href="backend.php?id={{ id }}&amp;action=edit" class="action-icon">{{#pix}}
+                    {{#allowmanagebackends}}<td><a href="backend.php?id={{ id }}&amp;action=edit" class="action-icon">{{#pix}}
                         t/edit, core, {{#str}}edit{{/str}}{{/pix}}</a>
                         <a href="backend.php?id={{ id }}&amp;action=delete&sesskey={{sesskey}}" class="action-icon" data-action="backenddelete">{{#pix}}
                             t/delete, core, {{#str}}delete{{/str}}{{/pix}}</a>
-                    </td>{{/allowmanage}}
+                    </td>{{/allowmanagebackends}}
                 </tr>
             {{/backends}}
             </tbody>

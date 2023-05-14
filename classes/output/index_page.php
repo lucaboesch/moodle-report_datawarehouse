@@ -23,7 +23,7 @@ use templatable;
 use renderer_base;
 use report_datawarehouse\utils;
 use report_datawarehouse\local\query_category as local_query_category;
-use report_datawarehouse\local\backend_category as local_backend_category;;
+use report_datawarehouse\local\backend_category as local_backend_category;
 use report_datawarehouse\output\query_category;
 
 /**
@@ -45,6 +45,9 @@ class index_page implements renderable, templatable {
 
     /** @var array Backends' data. */
     private $backends;
+
+    /** @var array Runs' data. */
+    private $runs;
 
     /** @var context Context to check the capability. */
     private $context;
@@ -70,6 +73,7 @@ class index_page implements renderable, templatable {
      * @param array $backendcategories Query categories for renderer.
      * @param array $queries Queries for renderer.
      * @param array $backends Backends for renderer.
+     * @param array $runs Runs for renderer.
      * @param context $context Context to check the capability.
      * @param moodle_url $returnurl Return url for edit/delete link.
      * @param int $showquerycat Showing Query category Id.
@@ -77,12 +81,13 @@ class index_page implements renderable, templatable {
      * @param int $showbackendcat Showing Backend category Id.
      * @param int $hidebackendcat Hiding Backend category Id.
      */
-    public function __construct(array $querycategories, array $backendcategories, array $queries, array $backends, context $context,
+    public function __construct(array $querycategories, array $backendcategories, array $queries, array $backends, array $runs, context $context,
         moodle_url $returnurl, int $showquerycat = 0, int $hidequerycat = 0, int $showbackendcat = 0, int $hidebackendcat = 0) {
         $this->querycategories = $querycategories;
         $this->backendcategories = $backendcategories;
         $this->queries = $queries;
         $this->backends = $backends;
+        $this->runs = $runs;
         $this->context = $context;
         $this->returnurl = $returnurl;
         $this->showquerycat = $showquerycat;
@@ -107,10 +112,15 @@ class index_page implements renderable, templatable {
 
         $backendcategoriesdata = [];
         $groupedbackends = $this->backends;
-        foreach ($groupedbackends as $backend) {
-            $backendcategoriesdata[] = $backend;
+        foreach ($groupedbackends as $backends) {
+            $backendcategoriesdata[] = $backends;
         }
 
+        $runcategoriesdata = [];
+        $groupedruns = $this->runs;
+        foreach ($groupedruns as $runs) {
+            $runcategoriesdata[] = $runs;
+        }
         $addquerybutton = '';
         if (has_capability('report/datawarehouse:managequeries', $this->context)) {
             $addquerybutton = $output->single_button(report_datawarehouse_url('query.php', ['returnurl' => $this->returnurl]),
@@ -122,6 +132,12 @@ class index_page implements renderable, templatable {
                 $output->single_button(report_datawarehouse_url('backend.php', ['returnurl' => $this->returnurl]),
                     get_string('addbackend', 'report_datawarehouse'), 'post', ['class' => 'mt-1 mb-3']);
         }
+        $addrunbutton = '';
+        if (has_capability('report/datawarehouse:manageruns', $this->context)) {
+            $addrunbutton =
+                $output->single_button(report_datawarehouse_url('run.php', ['returnurl' => $this->returnurl]),
+                    get_string('addrun', 'report_datawarehouse'), 'post', ['class' => 'mt-1 mb-3']);
+        }
         // phpcs:disable
         /*
                 if (has_capability('report/customsql:managecategories', $this->context)) {
@@ -131,18 +147,30 @@ class index_page implements renderable, templatable {
         */
         // phpcs:enable
 
-        $allowmanage = false;
+        $allowmanagequeries = false;
         if (has_capability('report/datawarehouse:managequeries', \context_system::instance())) {
-            $allowmanage = true;
+            $allowmanagequeries = true;
+        }
+        $allowmanagebackends = false;
+        if (has_capability('report/datawarehouse:managebackends', \context_system::instance())) {
+            $allowmanagebackends = true;
+        }
+        $allowmanageruns = false;
+        if (has_capability('report/datawarehouse:manageruns', \context_system::instance())) {
+            $allowmanageruns = true;
         }
 
         $data = [
             'addquerybutton' => $addquerybutton,
             'addbackendbutton' => $addbackendbutton,
+            'addrunbutton' => $addrunbutton,
             'queries' => (array) $querycategoriesdata,
             'backends' => (array) $backendcategoriesdata,
+            'runs' => (array) $runcategoriesdata,
             'sesskey' => sesskey(),
-            'allowmanage' => $allowmanage
+            'allowmanagequeries' => $allowmanagequeries,
+            'allowmanagebackends' => $allowmanagebackends,
+            'allowmanageruns' => $allowmanageruns
         ];
         return $data;
     }

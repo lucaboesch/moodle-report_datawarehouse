@@ -26,21 +26,28 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['addbackend'] = 'Add new backend';
 $string['addquery'] = 'Add new query';
+$string['addrun'] = 'Add new run';
 $string['alloweduser'] = 'Allowed user';
 $string['availablebackends'] = 'Available backends';
 $string['availablequeries'] = 'Available queries';
+$string['availableruns'] = 'Available runs';
+$string['backend'] = 'Backend';
 $string['backenddeleted'] = 'The data warehouse report backend has successfully been deleted';
 $string['cantdeletebackend'] = 'The backend can\'t be deleted.';
 $string['cantdeletequery'] = 'The query can\'t be deleted.';
 $string['canteditbackend'] = 'The backend can\'t be edited.';
 $string['canteditquery'] = 'The query can\'t be edited.';
+$string['canteditrun'] = 'The run can\'t be edited.';
 $string['categorycontent'] = '({$a->manual} on-demand, {$a->daily} daily, {$a->weekly} weekly, {$a->monthly} monthly)';
 $string['confirmbackendremovalquestion'] = 'Are you sure you want to remove this backend?';
 $string['confirmqueryremovalquestion'] = 'Are you sure you want to remove this query?';
 $string['confirmbackendremovaltitle'] = 'Confirm backend removal?';
 $string['confirmqueryremovaltitle'] = 'Confirm query removal?';
+$string['courseid'] = 'Course ID';
+$string['coursemoduleid'] = 'Course module ID';
 $string['datawarehouse:managebackends'] = 'Manage data warehouse report backends';
 $string['datawarehouse:managequeries'] = 'Manage data warehouse report queries';
+$string['datawarehouse:manageruns'] = 'Manage data warehouse report runs';
 $string['datawarehouse:view'] = 'View data warehouse reports';
 $string['description'] = 'Description';
 $string['editbackend'] = 'Edit backend';
@@ -60,10 +67,13 @@ $string['name'] = 'Name';
 $string['note'] = 'Notes';
 $string['nobackendsavailable'] = 'No backends available';
 $string['noqueriesavailable'] = 'No queries available';
+$string['norunsavailable'] = 'No runs available';
 $string['newbackend'] = 'New backend';
 $string['newquery'] = 'New query';
+$string['newrun'] = 'New run';
 $string['password'] = 'Password';
 $string['pluginname'] = 'Data warehouse reports';
+$string['query'] = 'Query';
 $string['querydeleted'] = 'The data warehouse report query has successfully been deleted';
 $string['querynote'] = '<ul>
 <li>The token <code>%%COURSEID%%</code> in the query will be replaced with the course id of the course the report is called in, before the query is executed. The same happens with <code>%%CMID%%</code> that will be replaced with the course module id.</li>
@@ -74,6 +84,7 @@ $string['querynote'] = '<ul>
 </ul></li>
 </ul>';
 $string['querysql'] = 'Query';
+$string['runsnote'] = '';
 $string['showonlythiscategory'] = 'Show only {$a}';
 $string['url'] = 'URL';
 $string['used'] = 'In use';

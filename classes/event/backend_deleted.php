@@ -59,7 +59,7 @@ class backend_deleted extends base {
      * Initialize the event data.
      */
     protected function init() {
-        $this->data['objecttable'] = 'report_datawarehouse_queries';
+        $this->data['objecttable'] = 'report_datawarehouse_bkends';
         $this->data['crud'] = 'd';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
     }

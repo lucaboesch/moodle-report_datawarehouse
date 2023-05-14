@@ -47,4 +47,11 @@ $capabilities = [
             'manager' => CAP_ALLOW
         ),
     ),
+    'report/datawarehouse:manageruns' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'manager' => CAP_ALLOW
+        ),
+    ),
 ];
