@@ -27,6 +27,8 @@ require_once($CFG->libdir . '/adminlib.php');
 
 require_login();
 
+use core\notification;
+
 $action = optional_param('action', 'view', PARAM_ALPHANUMEXT);
 
 $PAGE->set_context(context_system::instance());

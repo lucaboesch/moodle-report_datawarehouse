@@ -130,12 +130,19 @@ class index_page implements renderable, templatable {
                 }
         */
         // phpcs:enable
+
+        $allowmanage = false;
+        if (has_capability('report/datawarehouse:managequeries', \context_system::instance())) {
+            $allowmanage = true;
+        }
+
         $data = [
             'addquerybutton' => $addquerybutton,
             'addbackendbutton' => $addbackendbutton,
             'queries' => (array) $querycategoriesdata,
             'backends' => (array) $backendcategoriesdata,
-            'sesskey' => sesskey()
+            'sesskey' => sesskey(),
+            'allowmanage' => $allowmanage
         ];
         return $data;
     }

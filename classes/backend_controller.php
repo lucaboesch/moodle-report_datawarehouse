@@ -212,6 +212,11 @@ class backend_controller {
     protected function edit($action, $id = null) {
         global $PAGE;
 
+        if (!has_capability('report/datawarehouse:managebackends', \context_system::instance())) {
+            notification::warning(get_string('canteditbackend', 'report_datawarehouse'));
+            redirect(new \moodle_url('/report/datawarehouse/index.php'));
+        }
+
         $PAGE->set_url(new \moodle_url(static::get_base_url(), ['action' => $action, 'id' => $id]));
         $instance = null;
 
@@ -273,6 +278,10 @@ class backend_controller {
      * @param int $id ID of the region.
      */
     protected function delete($id) {
+        if (!has_capability('report/datawarehouse:managequeries', \context_system::instance())) {
+            notification::warning(get_string('cantdeletebackend', 'report_datawarehouse'));
+            redirect(new \moodle_url('/report/datawarehouse/index.php'));
+        }
         require_sesskey();
         $instance = $this->get_instance($id);
 
