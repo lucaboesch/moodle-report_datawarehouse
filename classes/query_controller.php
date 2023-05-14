@@ -278,7 +278,7 @@ class query_controller {
 
         if ($instance->can_delete()) {
             $instance->delete();
-            notification::success(get_string('deleted'));
+            notification::success(get_string('querydeleted', 'report_datawarehouse'));
 
             \report_datawarehouse\event\query_deleted::create_strict(
                 $id,

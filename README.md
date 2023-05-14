@@ -1,8 +1,7 @@
-# Data warehouse reports #
+# moodle-report_datawarehouse
+![](https://github.com/lucaboesch/moodle-report_datawarehouse/actions/workflows/moodle-plugin-ci.yml/badge.svg)
 
-TODO Describe the plugin shortly here.
-
-TODO Provide more detailed description here.
+My MSc Thesis project
 
 ## Installing via uploaded ZIP file ##
 

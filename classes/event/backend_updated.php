@@ -21,7 +21,9 @@ use core\event\base;
 /**
  * Event for when a backend is updated.
  *
- * @copyright   2023 Luca Bösch <luca.boesch@bfh.ch>
+ * @package    report_datawarehouse
+ * @copyright  2023 Luca Bösch <luca.boesch@bfh.ch>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backend_updated extends base {
 

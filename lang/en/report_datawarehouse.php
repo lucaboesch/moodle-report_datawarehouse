@@ -29,6 +29,7 @@ $string['addquery'] = 'Add new query';
 $string['alloweduser'] = 'Allowed user';
 $string['availablebackends'] = 'Available backends';
 $string['availablequeries'] = 'Available queries';
+$string['backenddeleted'] = 'The data warehouse report backend has successfully been deleted';
 $string['cantdeletebackend'] = 'The backend can\'t be deleted.';
 $string['cantdeletequery'] = 'The query can\'t be deleted.';
 $string['canteditbackend'] = 'The backend can\'t be edited.';
@@ -63,6 +64,7 @@ $string['newbackend'] = 'New backend';
 $string['newquery'] = 'New query';
 $string['password'] = 'Password';
 $string['pluginname'] = 'Data warehouse reports';
+$string['querydeleted'] = 'The data warehouse report query has successfully been deleted';
 $string['querynote'] = '<ul>
 <li>The token <code>%%COURSEID%%</code> in the query will be replaced with the course id of the course the report is called in, before the query is executed. The same happens with <code>%%CMID%%</code> that will be replaced with the course module id.</li>
 <li>The query must include <code>WHERE cm.course=%%COURSEID%% AND cm.id = %%CMID%% AND ((uid.data IS NULL) OR (uid.data !=\'1\'))</code> at the end, whereas the uid.data value comes from an user_info_data field of which a value of 1 expresses that the user opts out of analytics.</li>

@@ -278,7 +278,7 @@ class backend_controller {
 
         if ($instance->can_delete()) {
             $instance->delete();
-            notification::success(get_string('deleted'));
+            notification::success(get_string('backenddeleted', 'report_datawarehouse'));
 
             \report_datawarehouse\event\backend_deleted::create_strict(
                 $id,

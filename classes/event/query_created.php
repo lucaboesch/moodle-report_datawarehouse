@@ -14,6 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
+/**
+ * Event for when a query is created.
+ *
+ * @package    report_datawarehouse
+ * @copyright  2023 Luca Bösch <luca.boesch@bfh.ch>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 namespace report_datawarehouse\event;
 
 use core\event\base;
@@ -21,6 +29,7 @@ use core\event\base;
 /**
  * Event for when a query is created.
  *
+ * @package    report_datawarehouse
  * @copyright  2023 Luca Bösch <luca.boesch@bfh.ch>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

@@ -21,6 +21,7 @@ use core\event\base;
 /**
  * Event for when a query is disabled.
  *
+ * @package    report_datawarehouse
  * @copyright  2023 Luca Bösch <luca.boesch@bfh.ch>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
