@@ -64,6 +64,11 @@ class run_controller {
      */
     const ACTION_SHOW = 'show';
 
+    /**
+     * Run action.
+     */
+    const ACTION_RUN = 'run';
+
 
     /**
      * Locally cached $OUTPUT object.
@@ -104,6 +109,9 @@ class run_controller {
             case self::ACTION_SHOW:
                 $this->show(required_param('id', PARAM_INT));
                 break;
+
+            case self::ACTION_RUN:
+                $this->run($action, optional_param('id', null, PARAM_INT));
 
             case self::ACTION_VIEW:
             default:
@@ -240,7 +248,9 @@ class run_controller {
                         $persistent,
                         \context_system::instance()
                     )->trigger();
-                    $this->trigger_enabled_event($persistent);
+                    // phpcs:disable
+                    // $this->trigger_enabled_event($persistent);
+                    // phpcs:enable
                 } else {
                     // Modifying an existing run.
                     $instance->from_record($data);
@@ -250,7 +260,9 @@ class run_controller {
                         $instance,
                         \context_system::instance()
                     )->trigger();
-                    $this->trigger_enabled_event($instance);
+                    // phpcs:disable
+                    // $this->trigger_enabled_event($persistent);
+                    // phpcs:enable
                 }
                 notification::success(get_string('changessaved'));
             } catch (\Exception $e) {
@@ -299,6 +311,13 @@ class run_controller {
             notification::warning(get_string('cantdeleterun', 'report_datawarehouse'));
             redirect(new \moodle_url('/report/datawarehouse/index.php'));
         }
+    }
+
+    /**
+     * Execute run action.
+     */
+    protected function run() {
+        redirect(new \moodle_url('/report/datawarehouse/index.php'));
     }
 
     /**

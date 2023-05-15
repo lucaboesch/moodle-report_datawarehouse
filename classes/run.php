@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Entity model representing query settings for the data warehouse report.
+ * Entity model representing run settings for the data warehouse report.
  *
  * @package    report_datawarehouse
  * @copyright  2023 Luca Bösch <luca.boesch@bfh.ch>
@@ -27,7 +27,7 @@ namespace report_datawarehouse;
 use core\persistent;
 
 /**
- * Entity model representing query settings for the data warehouse report.
+ * Entity model representing run settings for the data warehouse report.
  *
  * @copyright  2023 Luca Bösch <luca.boesch@bfh.ch>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -71,22 +71,22 @@ class run extends persistent {
     }
 
     /**
-     * Validate query content.
+     * Validate run content.
      *
-     * @param string $query Query string to validate.
+     * @param string $run Run string to validate.
      *
      * @return bool|\lang_string
      */
-    protected function validate_query(string $query) {
-        if (helper::is_valid_report_datawarehouse_query($query)) {
+    protected function validate_run(string $run) {
+        if (helper::is_valid_report_datawarehouse_run($run)) {
             return true;
         } else {
-            return new \lang_string('invalidquery', 'report_datawarehouse');
+            return new \lang_string('invalidrun', 'report_datawarehouse');
         }
     }
 
     /**
-     * Check if we can delete the query.
+     * Check if we can delete the run.
      *
      * @return bool
      */
@@ -96,7 +96,7 @@ class run extends persistent {
 // phpcs:disable
 /*
         if ($this->get('id')) {
-            $settings = quiz_settings::get_records(['queryid' => $this->get('id')]);
+            $settings = quiz_settings::get_records(['runid' => $this->get('id')]);
             $result = empty($settings);
         }
 */

@@ -81,8 +81,9 @@ class index_page implements renderable, templatable {
      * @param int $showbackendcat Showing Backend category Id.
      * @param int $hidebackendcat Hiding Backend category Id.
      */
-    public function __construct(array $querycategories, array $backendcategories, array $queries, array $backends, array $runs, context $context,
-        moodle_url $returnurl, int $showquerycat = 0, int $hidequerycat = 0, int $showbackendcat = 0, int $hidebackendcat = 0) {
+    public function __construct(array $querycategories, array $backendcategories, array $queries, array $backends, array $runs,
+        context $context, moodle_url $returnurl, int $showquerycat = 0, int $hidequerycat = 0, int $showbackendcat = 0,
+        int $hidebackendcat = 0) {
         $this->querycategories = $querycategories;
         $this->backendcategories = $backendcategories;
         $this->queries = $queries;
@@ -119,6 +120,8 @@ class index_page implements renderable, templatable {
         $runcategoriesdata = [];
         $groupedruns = $this->runs;
         foreach ($groupedruns as $runs) {
+            $runs->queryname = report_datawarehouse_get_query_name_by_id($runs->queryid);
+            $runs->backendname = report_datawarehouse_get_backend_name_by_id($runs->backendid);
             $runcategoriesdata[] = $runs;
         }
         $addquerybutton = '';

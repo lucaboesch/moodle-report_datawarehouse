@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Event for when a backend is disabled.
+ * Event for when a run is deleted.
  *
  * @package    report_datawarehouse
  * @copyright  2023 Luca Bösch <luca.boesch@bfh.ch>
@@ -27,13 +27,13 @@ namespace report_datawarehouse\event;
 use core\event\base;
 
 /**
- * Event for when a backend is disabled.
+ * Event for when a run is deleted.
  *
  * @package    report_datawarehouse
  * @copyright  2023 Luca Bösch <luca.boesch@bfh.ch>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class backend_disabled extends base {
+class run_deleted extends base {
 
     /**
      * Create event with strict parameters.
@@ -41,17 +41,16 @@ class backend_disabled extends base {
      * Define strict parameters to create event with instead of relying on internal validation of array. Better code practice.
      * Easier for consumers of this class to know what data must be supplied and observers can have more trust in event data.
      *
-     * @param \report_datawarehouse\backend $backend Data warehouse report backend.
+     * @param string $id The id of the run
      * @param \context_system $context Context system.
      * @return base
      */
-    public static function create_strict(\report_datawarehouse\backend $backend, \context_system $context) : base {
+    public static function create_strict(string $id, \context_system $context) : base {
         global $USER;
-        $tid = $backend->get('id');
 
         return self::create([
             'userid' => $USER->id,
-            'objectid' => $tid,
+            'objectid' => $id,
             'context' => $context,
         ]);
     }
@@ -61,7 +60,7 @@ class backend_disabled extends base {
      */
     protected function init() {
         $this->data['objecttable'] = 'report_datawarehouse_bkends';
-        $this->data['crud'] = 'u';
+        $this->data['crud'] = 'd';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
     }
 
@@ -71,7 +70,7 @@ class backend_disabled extends base {
      * @return string Name of event.
      */
     public static function get_name() {
-        return get_string('event:backenddisabled', 'report_datawarehouse');
+        return get_string('event:rundeleted', 'report_datawarehouse');
     }
 
     /**
@@ -79,11 +78,7 @@ class backend_disabled extends base {
      * @return \moodle_url
      */
     public function get_url() {
-        $params = [
-            'id' => $this->objectid,
-            'action' => 'edit',
-        ];
-        return new \moodle_url('/report/datawarehouse/backend.php', $params);
+        return new \moodle_url('/report/datawarehouse/run.php');
     }
 
     /**
@@ -92,7 +87,7 @@ class backend_disabled extends base {
      * @return string Description.
      */
     public function get_description() {
-        return "The user with id '$this->userid' has disabled a backend with id '$this->objectid'.";
+        return "The user with id '$this->userid' has deleted a run with id '$this->objectid'.";
     }
 
     /**
@@ -102,7 +97,7 @@ class backend_disabled extends base {
      * @return array Mapping of object id.
      */
     public static function get_objectid_mapping() : array {
-        return array('db' => 'report_datawarehouse_bkends', 'restore' => 'report_datawarehouse_bkends');
+        return array('db' => 'report_datawarehouse_runs', 'restore' => 'report_datawarehouse_runs');
     }
 
     /**

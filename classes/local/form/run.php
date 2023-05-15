@@ -24,6 +24,10 @@
 
 namespace report_datawarehouse\local\form;
 
+defined('MOODLE_INTERNAL') || die();
+
+require_once(dirname(__FILE__) . '/../../../locallib.php');
+
 /**
  * Form for manipulating the query records.
  *
@@ -43,22 +47,35 @@ class run extends \core\form\persistent {
 
         $mform = $this->_form;
 
+        $queries = [];
+        $queries[0] = get_string('none');
+        $enabledqueries = report_datawarehouse_get_queries();
+        foreach ($enabledqueries as $qry) {
+            $queries[$qry->id] = format_string($qry->name);
+        }
 
-        $mform->addElement('select', 'query', get_string('query', 'report_datawarehouse'));
-        $mform->addRule('query', get_string('required'), 'required', null, 'client');
+        $mform->addElement('select', 'queryid', get_string('query', 'report_datawarehouse'), $queries);
+        $mform->addRule('queryid', get_string('required'), 'required', null, 'client');
         $mform->setType('enabled', PARAM_INT);
 
-        $mform->addElement('select', 'backend', get_string('backend', 'report_datawarehouse'));
-        $mform->addRule('backend', get_string('required'), 'required', null, 'client');
+        $backends = [];
+        $backends[0] = get_string('none');
+        $enabledbackends = report_datawarehouse_get_backends();
+        foreach ($enabledbackends as $bknd) {
+            $backends[$bknd->id] = format_string($bknd->name);
+        }
+
+        $mform->addElement('select', 'backendid', get_string('backend', 'report_datawarehouse'), $backends);
+        $mform->addRule('backendid', get_string('required'), 'required', null, 'client');
         $mform->setType('enabled', PARAM_INT);
 
         $mform->addElement('text', 'courseid', get_string('courseid', 'report_datawarehouse'), 'maxlength="16" size="10"');
         $mform->addRule('courseid', get_string('required'), 'required', null, 'client');
         $mform->setType('courseid', PARAM_INT);
 
-        $mform->addElement('text', 'coursemoduleid', get_string('coursemoduleid', 'report_datawarehouse'), 'maxlength="16" size="10"');
-        $mform->addRule('coursemoduleid', get_string('required'), 'required', null, 'client');
-        $mform->setType('coursemoduleid', PARAM_INT);
+        $mform->addElement('text', 'cmid', get_string('coursemoduleid', 'report_datawarehouse'), 'maxlength="16" size="10"');
+        $mform->addRule('cmid', get_string('required'), 'required', null, 'client');
+        $mform->setType('cmid', PARAM_INT);
 
         $mform->addElement('static', 'note', get_string('note', 'report_datawarehouse'),
             get_string('runsnote', 'report_datawarehouse', $CFG->wwwroot));
@@ -81,11 +98,6 @@ class run extends \core\form\persistent {
      */
     protected function extra_validation($data, $files, array &$errors) {
         $newerrors = [];
-
-        // Check name.
-        if (empty($data->name)) {
-            $newerrors['name'] = get_string('namerequired', 'report_datawarehouse');
-        }
 
         return $newerrors;
     }

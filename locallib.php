@@ -765,6 +765,62 @@ function report_datawarehouse_get_month_starts($timenow) {
 }
 
 /**
+ * Get the queries ids and names.
+ *
+ * @return array
+ */
+function report_datawarehouse_get_queries() {
+    global $DB;
+    $queries = $DB->get_records_select('report_datawarehouse_queries', "enabled = ?", [1], 'sortorder');
+
+    $activequeries = array();
+    foreach ($queries as $id => $b) {
+        $activequeries[] = $b;
+    }
+    return $activequeries;
+}
+
+/**
+ * Get the query name by id.
+ *
+ * @param int $queryid a query id.
+ * @return array
+ */
+function report_datawarehouse_get_query_name_by_id($queryid) {
+    global $DB;
+    $queryname = $DB->get_field("report_datawarehouse_queries", "name", ["id" => $queryid]);
+    return format_string($queryname);
+}
+
+/**
+ * Get the backend ids and names.
+ *
+ * @return array
+ */
+function report_datawarehouse_get_backends() {
+    global $DB;
+    $backends = $DB->get_records_select('report_datawarehouse_bkends', "enabled = ?", [1], 'sortorder');
+
+    $activebackends = array();
+    foreach ($backends as $id => $b) {
+        $activebackends[] = $b;
+    }
+    return $activebackends;
+}
+
+/**
+ * Get the backend name by id.
+ *
+ * @param int $backendid a backend id.
+ * @return array
+ */
+function report_datawarehouse_get_backend_name_by_id($backendid) {
+    global $DB;
+    $backendname = $DB->get_field("report_datawarehouse_bkends", "name", ["id" => $backendid]);
+    return format_string($backendname);
+}
+
+/**
  * Get the start times of the reports.
  *
  * @param object $report report settings from the database.

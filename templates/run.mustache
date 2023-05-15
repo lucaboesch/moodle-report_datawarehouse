@@ -57,16 +57,23 @@
                 <th>{{#str}}backend, report_datawarehouse{{/str}}</th>
                 <th>{{#str}}courseid, report_datawarehouse{{/str}}</th>
                 <th>{{#str}}coursemoduleid, report_datawarehouse{{/str}}</th>
-                {{#allowmanage}}<th>{{#str}}actions{{/str}}</th>{{/allowmanage}}
+                <th>{{#str}}lastrun, report_datawarehouse{{/str}}</th>
+                {{#allowmanageruns}}<th>{{#str}}actions{{/str}}</th>{{/allowmanageruns}}
             </tr>
             </thead>
             <tbody>
             {{#runs}}
                 <tr>
-                    <td>{{#allowmanage}}<a href="run.php?id={{ id }}&amp;action=edit">{{/allowmanage}}{{ query }}{{#allowmanage}}</a>{{/allowmanage}}</td>
-                    <td>{{ backend }}</td>
+                    <td>{{ queryname }}</td>
+                    <td>{{ backendname }}</td>
                     <td>{{ courseid }}</td>
                     <td>{{ cmid }}</td>
+                    <td><div class="run-runnow"><a href="run.php?id={{ id }}&amp;action=run">{{#str}}runnow, report_datawarehouse{{/str}}</a></div></td>
+                    {{#allowmanageruns}}<td><a href="run.php?id={{ id }}&amp;action=edit" class="action-icon">{{#pix}}
+                        t/edit, core, {{#str}}edit{{/str}}{{/pix}}</a>
+                        <a href="run.php?id={{ id }}&amp;action=delete&sesskey={{ sesskey }}" class="action-icon" data-action="rundelete">{{#pix}}
+                            t/delete, core, {{#str}}delete{{/str}}{{/pix}}</a>
+                    </td>{{/allowmanageruns}}
                 </tr>
             {{/runs}}
             </tbody>

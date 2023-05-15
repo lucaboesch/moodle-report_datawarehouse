@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Event for when a backend is disabled.
+ * Event for when a run is enabled.
  *
  * @package    report_datawarehouse
  * @copyright  2023 Luca Bösch <luca.boesch@bfh.ch>
@@ -27,13 +27,13 @@ namespace report_datawarehouse\event;
 use core\event\base;
 
 /**
- * Event for when a backend is disabled.
+ * Event for when a run is enabled.
  *
  * @package    report_datawarehouse
  * @copyright  2023 Luca Bösch <luca.boesch@bfh.ch>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class backend_disabled extends base {
+class run_enabled extends base {
 
     /**
      * Create event with strict parameters.
@@ -41,13 +41,13 @@ class backend_disabled extends base {
      * Define strict parameters to create event with instead of relying on internal validation of array. Better code practice.
      * Easier for consumers of this class to know what data must be supplied and observers can have more trust in event data.
      *
-     * @param \report_datawarehouse\backend $backend Data warehouse report backend.
+     * @param \report_datawarehouse\run $run Data warehouse report run.
      * @param \context_system $context Context system.
      * @return base
      */
-    public static function create_strict(\report_datawarehouse\backend $backend, \context_system $context) : base {
+    public static function create_strict(\report_datawarehouse\run $run, \context_system $context) : base {
         global $USER;
-        $tid = $backend->get('id');
+        $tid = $run->get('id');
 
         return self::create([
             'userid' => $USER->id,
@@ -71,7 +71,7 @@ class backend_disabled extends base {
      * @return string Name of event.
      */
     public static function get_name() {
-        return get_string('event:backenddisabled', 'report_datawarehouse');
+        return get_string('event:runenabled', 'report_datawarehouse');
     }
 
     /**
@@ -83,7 +83,7 @@ class backend_disabled extends base {
             'id' => $this->objectid,
             'action' => 'edit',
         ];
-        return new \moodle_url('/report/datawarehouse/backend.php', $params);
+        return new \moodle_url('/report/datawarehouse/run.php', $params);
     }
 
     /**
@@ -92,7 +92,7 @@ class backend_disabled extends base {
      * @return string Description.
      */
     public function get_description() {
-        return "The user with id '$this->userid' has disabled a backend with id '$this->objectid'.";
+        return "The user with id '$this->userid' has enabled a run with id '$this->objectid'.";
     }
 
     /**
