@@ -66,11 +66,12 @@
                     <td>{{#allowmanagequeries}}<a href="query.php?id={{ id }}&amp;action=edit">{{/allowmanagequeries}}{{ name }}{{#allowmanagequeries}}</a>{{/allowmanagequeries}}</td>
                     <td>{{ description }}</td>
                     <td>{{#enabled}}{{#str}}yes{{/str}}{{/enabled}}{{^enabled}}{{#str}}no{{/str}}{{/enabled}}</td>
-                    <td>{{^inuse}}{{#str}}yes{{/str}}{{/inuse}}{{#inuse}}{{#str}}no{{/str}}{{/inuse}}</td>
+                    <td>{{#inuse}}{{#str}}yes{{/str}}{{/inuse}}{{^inuse}}{{#str}}no{{/str}}{{/inuse}}
+                    </td>
                     {{#allowmanagequeries}}<td><a href="query.php?id={{ id }}&amp;action=edit" class="action-icon">{{#pix}}
                         t/edit, core, {{#str}}edit{{/str}}{{/pix}}</a>
-                        <a href="query.php?id={{ id }}&amp;action=delete&sesskey={{ sesskey }}" class="action-icon" data-action="querydelete">{{#pix}}
-                            t/delete, core, {{#str}}delete{{/str}}{{/pix}}</a>
+                    {{#inuse}}{{/inuse}}{{^inuse}}<a href="query.php?id={{ id }}&amp;action=delete&sesskey={{ sesskey }}" class="action-icon" data-action="querydelete">{{#pix}}
+                            t/delete, core, {{#str}}delete{{/str}}{{/pix}}</a>{{/inuse}}
                     </td>{{/allowmanagequeries}}
                 </tr>
             {{/queries}}

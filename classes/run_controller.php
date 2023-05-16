@@ -143,11 +143,15 @@ class run_controller {
      * Print out all records in a table.
      */
     protected function display_all_records() {
+        // phpcs:disable
+/*
         $records = $this->get_sorted_runs_list();
-
         $table = new run_list();
         $table->display($records);
+*/
+        // phpcs:enable
     }
+
 
     /**
      * Return a list of runs sorted by the order defined in the admin interface

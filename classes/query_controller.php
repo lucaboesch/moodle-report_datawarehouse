@@ -135,10 +135,13 @@ class query_controller {
      * Print out all records in a table.
      */
     protected function display_all_records() {
-        $records = $this->get_sorted_queries_list();
+        // phpcs:disable
+/*      $records = $this->get_sorted_queries_list();
 
         $table = new query_list();
         $table->display($records);
+*/
+        // phpcs:enable
     }
 
     /**

@@ -65,11 +65,11 @@
                     <td>{{#allowmanagebackends}}<a href="backend.php?id={{ id }}&amp;action=edit">{{/allowmanagebackends}}{{ name }}{{#allowmanagebackends}}</a>{{/allowmanagebackends}}</td>
                     <td>{{ description }}</td>
                     <td>{{#enabled}}{{#str}}yes{{/str}}{{/enabled}}{{^enabled}}{{#str}}no{{/str}}{{/enabled}}</td>
-                    <td>{{^inuse}}{{#str}}yes{{/str}}{{/inuse}}{{#inuse}}{{#str}}no{{/str}}{{/inuse}}</td>
+                    <td>{{#inuse}}{{#str}}yes{{/str}}{{/inuse}}{{^inuse}}{{#str}}no{{/str}}{{/inuse}}</td>
                     {{#allowmanagebackends}}<td><a href="backend.php?id={{ id }}&amp;action=edit" class="action-icon">{{#pix}}
                         t/edit, core, {{#str}}edit{{/str}}{{/pix}}</a>
-                        <a href="backend.php?id={{ id }}&amp;action=delete&sesskey={{sesskey}}" class="action-icon" data-action="backenddelete">{{#pix}}
-                            t/delete, core, {{#str}}delete{{/str}}{{/pix}}</a>
+                        {{#inuse}}{{/inuse}}{{^inuse}}<a href="backend.php?id={{ id }}&amp;action=delete&sesskey={{sesskey}}" class="action-icon" data-action="backenddelete">{{#pix}}
+                            t/delete, core, {{#str}}delete{{/str}}{{/pix}}</a>{{/inuse}}
                     </td>{{/allowmanagebackends}}
                 </tr>
             {{/backends}}

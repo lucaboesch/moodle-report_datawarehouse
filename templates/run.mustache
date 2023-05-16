@@ -71,8 +71,8 @@
                     <td><div class="run-runnow"><a href="run.php?id={{ id }}&amp;action=run">{{#str}}runnow, report_datawarehouse{{/str}}</a></div></td>
                     {{#allowmanageruns}}<td><a href="run.php?id={{ id }}&amp;action=edit" class="action-icon">{{#pix}}
                         t/edit, core, {{#str}}edit{{/str}}{{/pix}}</a>
-                        <a href="run.php?id={{ id }}&amp;action=delete&sesskey={{ sesskey }}" class="action-icon" data-action="rundelete">{{#pix}}
-                            t/delete, core, {{#str}}delete{{/str}}{{/pix}}</a>
+                    {{#inuse}}{{/inuse}}{{^inuse}}<a href="run.php?id={{ id }}&amp;action=delete&sesskey={{ sesskey }}" class="action-icon" data-action="rundelete">{{#pix}}
+                            t/delete, core, {{#str}}delete{{/str}}{{/pix}}{{/inuse}}</a>
                     </td>{{/allowmanageruns}}
                 </tr>
             {{/runs}}

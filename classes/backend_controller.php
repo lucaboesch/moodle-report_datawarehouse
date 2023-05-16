@@ -135,10 +135,13 @@ class backend_controller {
      * Print out all records in a table.
      */
     protected function display_all_records() {
+        // phpcs:disable
+/*
         $records = $this->get_sorted_backends_list();
-
         $table = new backend_list();
         $table->display($records);
+*/
+        // phpcs:enable
     }
 
     /**

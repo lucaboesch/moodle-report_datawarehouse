@@ -108,12 +108,14 @@ class index_page implements renderable, templatable {
         $querycategoriesdata = [];
         $groupedqueries = $this->queries;
         foreach ($groupedqueries as $queries) {
+            $queries->inuse = report_datawarehouse_get_query_used_by_id($queries->id);
             $querycategoriesdata[] = $queries;
         }
 
         $backendcategoriesdata = [];
         $groupedbackends = $this->backends;
         foreach ($groupedbackends as $backends) {
+            $backends->inuse = report_datawarehouse_get_backend_used_by_id($backends->id);
             $backendcategoriesdata[] = $backends;
         }
 

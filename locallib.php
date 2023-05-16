@@ -784,6 +784,22 @@ function report_datawarehouse_get_queries() {
  * Get the query name by id.
  *
  * @param int $queryid a query id.
+ * @return bool
+ */
+function report_datawarehouse_get_query_used_by_id($queryid) {
+    global $DB;
+    $queryinuse = $DB->get_field('report_datawarehouse_runs', 'COUNT(id)', array('queryid' => $queryid));
+    if ($queryinuse > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Get the query name by id.
+ *
+ * @param int $queryid a query id.
  * @return array
  */
 function report_datawarehouse_get_query_name_by_id($queryid) {
@@ -818,6 +834,22 @@ function report_datawarehouse_get_backend_name_by_id($backendid) {
     global $DB;
     $backendname = $DB->get_field("report_datawarehouse_bkends", "name", ["id" => $backendid]);
     return format_string($backendname);
+}
+
+/**
+ * Get the backend usage by id.
+ *
+ * @param int $backendid a backend id.
+ * @return bool
+ */
+function report_datawarehouse_get_backend_used_by_id($backendid) {
+    global $DB;
+    $queryinuse = $DB->get_field('report_datawarehouse_runs', 'COUNT(id)', array('backendid' => $backendid));
+    if ($queryinuse > 0) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**
