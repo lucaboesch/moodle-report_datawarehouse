@@ -47,6 +47,8 @@ class run extends \core\form\persistent {
 
         $mform = $this->_form;
 
+        $mform->addElement('html', get_string('runsnote', 'report_datawarehouse'));
+
         $queries = [];
         $queries[0] = get_string('none');
         $enabledqueries = report_datawarehouse_get_queries();
@@ -69,16 +71,13 @@ class run extends \core\form\persistent {
         $mform->addRule('backendid', get_string('required'), 'required', null, 'client');
         $mform->setType('enabled', PARAM_INT);
 
-        $mform->addElement('text', 'courseid', get_string('courseid', 'report_datawarehouse'), 'maxlength="16" size="10"');
-        $mform->addRule('courseid', get_string('required'), 'required', null, 'client');
-        $mform->setType('courseid', PARAM_INT);
-
         $mform->addElement('text', 'cmid', get_string('coursemoduleid', 'report_datawarehouse'), 'maxlength="16" size="10"');
         $mform->addRule('cmid', get_string('required'), 'required', null, 'client');
         $mform->setType('cmid', PARAM_INT);
 
-        $mform->addElement('static', 'note', get_string('note', 'report_datawarehouse'),
-            get_string('runsnote', 'report_datawarehouse', $CFG->wwwroot));
+        $mform->addElement('text', 'courseid', get_string('courseid', 'report_datawarehouse'), 'maxlength="16" size="10"');
+        $mform->addRule('courseid', get_string('required'), 'required', null, 'client');
+        $mform->setType('courseid', PARAM_INT);
 
         $this->add_action_buttons();
 

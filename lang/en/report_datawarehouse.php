@@ -96,7 +96,8 @@ $string['querynote'] = '<ul>
 $string['querysql'] = 'Query';
 $string['rundeleted'] = 'The data warehouse report run has successfully been deleted';
 $string['runnow'] = 'Run now';
-$string['runsnote'] = '';
+$string['runsnote'] = '<div class="mb-6"><br>Combine a prepared query and backend with a course module (a quiz, an assignment etc.) and a course for which the run should be executed.</br>
+The course module and the course field have no chooser on purpose, look up the values in the URL or the breadcrumb/course/secondary navigation.</p></div>';
 $string['showonlythiscategory'] = 'Show only {$a}';
 $string['url'] = 'URL';
 $string['used'] = 'In use';
