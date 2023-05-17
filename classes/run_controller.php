@@ -26,6 +26,10 @@ namespace report_datawarehouse;
 
 use core\notification;
 
+defined('MOODLE_INTERNAL') || die();
+
+require_once(dirname(__FILE__) . '/../locallib.php');
+
 /**
  * Class for manipulating with the run records.
  *
@@ -111,7 +115,7 @@ class run_controller {
                 break;
 
             case self::ACTION_RUN:
-                $this->run($action, optional_param('id', null, PARAM_INT));
+                $this->run(required_param('id', PARAM_INT));
 
             case self::ACTION_VIEW:
             default:
@@ -320,7 +324,8 @@ class run_controller {
     /**
      * Execute run action.
      */
-    protected function run() {
+    protected function run($runid) {
+        report_datawarehouse_execute_run($runid);
         redirect(new \moodle_url('/report/datawarehouse/index.php'));
     }
 
