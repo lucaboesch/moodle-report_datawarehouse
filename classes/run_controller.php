@@ -323,6 +323,10 @@ class run_controller {
 
     /**
      * Execute run action.
+     *
+     * @param int $runid the run id
+     * @throws \dml_exception
+     * @throws \moodle_exception
      */
     protected function run($runid) {
         report_datawarehouse_execute_run($runid);

@@ -132,20 +132,24 @@ function report_datawarehouse_execute_run($runid) {
     $run = $DB->get_record('report_datawarehouse_runs', ['id' => $runid]);
 
     report_datawarehouse_generate_csv($run->queryid, $run->backendid, $timenow, $run->cmid, $run->courseid);
+    report_datawarehouse_note_lastrun($runid, $timenow);
 }
 
 /**
  * Generate a CSV
  *
  * @param int $queryid A query id
- * @param int $backendid A backend id
+ * @param int $backendid A backend
  * @param int $timenow A timestamp
  * @param int $cmid The course module id
  * @param int $courseid The course id
  * @return mixed|null A timestamp
+ * @throws coding_exception
  * @throws dml_exception
+ * @throws file_exception
+ * @throws stored_file_creation_exception
  */
-function report_datawarehouse_generate_csv(int $queryid, int $backend, int $timenow, int $cmid, int $courseid) {
+function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $timenow, int $cmid, int $courseid) {
     global $DB;
     $starttime = microtime(true);
 
@@ -165,11 +169,9 @@ function report_datawarehouse_generate_csv(int $queryid, int $backend, int $time
         if (!$csvtimestamp) {
             list($csvfilename, $tempfolder, $csvtimestamp) = report_datawarehouse_csv_filename($filename, $timenow);
             $csvfilenames[] = $csvfilename;
-            file_put_contents('/Users/luca/Desktop/log3.txt', json_encode($csvfilename));
 
             if (!file_exists($csvfilename)) {
                 $handle = fopen($csvfilename, 'w');
-                file_put_contents('/Users/luca/Desktop/log0.txt', json_encode($csvfilename));
                 report_datawarehouse_start_csv($handle, $row, $query);
             } else {
                 $handle = fopen($csvfilename, 'a');
@@ -247,9 +249,9 @@ function report_datawarehouse_generate_csv(int $queryid, int $backend, int $time
         // Initiate cURL object with URL.
         $ch = curl_init($url);
 
-        # Setup request to send json via POST.
+        // Setup request to send json via POST.
         $fp = fopen($tempfolder . '/' . $filename, 'r');
-        $headers = fgetcsv($fp); // Get column headers
+        $headers = fgetcsv($fp); // Get column headers.
 
         $data = array();
         while (($row = fgetcsv($fp)) !== false) {
@@ -259,15 +261,14 @@ function report_datawarehouse_generate_csv(int $queryid, int $backend, int $time
 
         curl_setopt( $ch, CURLOPT_POSTFIELDS, trim(json_encode($data), '[]'));
         curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-        # Return response instead of printing.
+        // Return response instead of printing.
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-        # Send request.
+        // Send request.
         $result = curl_exec($ch);
         curl_close($ch);
-        # Print response.
+        // Print response.
         echo "<pre>$result</pre>";
     }
-
     return $csvtimestamp;
 }
 
@@ -1341,4 +1342,18 @@ function write_datawarehouse_file($filerecord, $content) :bool {
     } else {
         return false;
     }
+}
+
+/**
+ * Update a run lastrun entry.
+ *
+ * @param int $runid the run id
+ * @param int $timestamp a time stamp
+ * @return bool
+ * @throws file_exception
+ * @throws stored_file_creation_exception
+ */
+function report_datawarehouse_note_lastrun($runid, $timestamp) {
+    global $DB;
+    $DB->update_record('report_datawarehouse_runs', ['id' => $runid, 'lastrun' => $timestamp]);
 }
