@@ -157,8 +157,7 @@ function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $ti
 
     $query = $DB->get_record('report_datawarehouse_queries', ['id' => $queryid]);
 
-    $sql = report_datawarehouse_prepare_sql($query, $timenow, $courseid);
-
+    $sql = report_datawarehouse_prepare_sql($query, $cmid, $courseid);
     $rs = report_datawarehouse_execute_query($sql);
 
     $csvfilenames = array();
