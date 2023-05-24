@@ -124,7 +124,11 @@ class index_page implements renderable, templatable {
         foreach ($groupedruns as $runs) {
             $runs->queryname = report_datawarehouse_get_query_name_by_id($runs->queryid);
             $runs->backendname = report_datawarehouse_get_backend_name_by_id($runs->backendid);
-            $runs->lastrunstring = userdate($runs->lastrun, '%d %b %Y %T');
+            if ($runs->lastrun == 0) {
+                $runs->lastrunstring = get_string('never');
+            } else {
+                $runs->lastrunstring = userdate($runs->lastrun, '%d %b %Y %T');
+            }
             $runcategoriesdata[] = $runs;
         }
         $addquerybutton = '';
