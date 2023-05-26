@@ -1,3 +1,8 @@
 #page-admin-report-datawarehouse-index .run-runnow {
     font-size: .75em;
 }
+#page-report-datawarehouse-query #id_querysql {
+    min-width: 100%;
+    font-family: monospace;
+    line-height: 1.4;
+}
