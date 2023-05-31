@@ -47,7 +47,6 @@ function report_datawarehouse_execute_query($sql, $params = null, $limitnum = nu
     if ($limitnum === null) {
         $limitnum = 0;
     }
-    file_put_contents('/Users/luca/Desktop/log2.txt', $sql);
     $sql = preg_replace('/\bprefix_(?=\w+)/i', $CFG->prefix, $sql);
 
     if (isset($params)) {
@@ -70,11 +69,16 @@ function report_datawarehouse_execute_query($sql, $params = null, $limitnum = nu
  * @param \stdClass $query A query object
  * @param int $cmid The course module
  * @param int $courseid The course
+ * @param string $filename The file name
  * @return array|string|string[]
  */
-function report_datawarehouse_prepare_sql($query, int $cmid, int $courseid) {
+function report_datawarehouse_prepare_sql($query, int $cmid, int $courseid, $filename = '') {
     global $USER;
     $sql = $query->querysql;
+    if ($filename != '' && str_starts_with($sql, 'SELECT')) {
+        // Write the filename in a first field 'loadid'.
+        $sql = preg_replace('/SELECT/', 'SELECT \'' . $filename . '\' AS "loadid", ', $sql, 1);
+    }
     $sql = report_datawarehouse_substitute_user_token($sql, $USER->id);
     $sql = report_datawarehouse_substitute_course_module_id($sql, $cmid);
     $sql = report_datawarehouse_substitute_course_id($sql, $courseid);
@@ -155,15 +159,15 @@ function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $ti
 
     $itemid = get_file_itemid() + 1;
 
-    $query = $DB->get_record('report_datawarehouse_queries', ['id' => $queryid]);
-
-    $sql = report_datawarehouse_prepare_sql($query, $cmid, $courseid);
-    $rs = report_datawarehouse_execute_query($sql);
-
     $csvfilenames = array();
     $csvtimestamp = null;
     $count = 0;
+    $query = $DB->get_record('report_datawarehouse_queries', ['id' => $queryid]);
     $filename = report_datawarehouse_get_filename($cmid, $query, $itemid);
+
+    $sql = report_datawarehouse_prepare_sql($query, $cmid, $courseid, $filename);
+    $rs = report_datawarehouse_execute_query($sql);
+
     foreach ($rs as $row) {
         if (!$csvtimestamp) {
             list($csvfilename, $tempfolder, $csvtimestamp) = report_datawarehouse_csv_filename($filename, $timenow);
@@ -217,7 +221,7 @@ function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $ti
 
     if ($backend->username == '' && $backend->password == '' ) {
         // PUT to a Pre-Authenticated Requests enabled Oracle Object Storage Bucket.
-        $url = $DB->get_field('report_datawarehouse_bkends', 'url', array('id' => $backend->id));
+        $url = $DB->get_field('report_datawarehouse_bkends', 'url', array('id' => $backendid));
         // Initiate cURL object.
         $curl = curl_init();
         // Set your URL.
