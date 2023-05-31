@@ -36,6 +36,8 @@ require_once($CFG->libdir . '/externallib.php');
  * @copyright   2023 Luca Bösch <luca.boesch@bfh.ch>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  *
+ * @runTestsInSeparateProcesses
+ * @runInSeparateProcesses
  */
 class file_storage_test extends \advanced_testcase {
 
