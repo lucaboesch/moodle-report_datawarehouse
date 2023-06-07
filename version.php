@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'report_datawarehouse';
-$plugin->release = '0.2.0';
-$plugin->version = 2023051401;
+$plugin->release = '0.9.0';
+$plugin->version = 2023060700;
 $plugin->requires = 2022112800;
-$plugin->maturity = MATURITY_ALPHA;
+$plugin->maturity = MATURITY_BETA;
