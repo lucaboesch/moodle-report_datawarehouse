@@ -33,6 +33,13 @@ $capabilities = [
             'manager' => CAP_ALLOW,
         ],
     ],
+    'report/datawarehouse:viewfiles' => [
+        'captype' => 'view',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'manager' => CAP_ALLOW,
+        ],
+    ],
     'report/datawarehouse:managequeries' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
