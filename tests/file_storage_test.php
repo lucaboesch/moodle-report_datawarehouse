@@ -26,20 +26,32 @@ namespace report_datawarehouse;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(__DIR__ . '/../locallib.php');
-require_once($CFG->libdir . '/externallib.php');
+global $CFG;
+require_once($CFG->dirroot . '/webservice/tests/helpers.php');
+require_once($CFG->dirroot . '/report/datawarehouse/locallib.php');
+
+use core_external\external_api;
+use core_external\util as external_util;
+use externallib_advanced_testcase;
+use mod_glossary_external;
+
+defined('MOODLE_INTERNAL') || die();
+
+if ($CFG->branch < 402) { // In Moodle ≥ 4.2 it throws a @runInSeparateProcess warning otherwise.
+    require_once($CFG->libdir . '/externallib.php');
+}
 
 /**
  * Unit test for writing to and reading from file area.
  *
  * @package     report_datawarehouse
+ * @runTestsInSeparateProcesses
+ * @covers \report_datawarehouse\local\form\query
+ *
  * @copyright   2023 Luca Bösch <luca.boesch@bfh.ch>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
- * @runTestsInSeparateProcesses
- * @runInSeparateProcesses
  */
-class file_storage_test extends \advanced_testcase {
+class file_storage_test extends externallib_advanced_testcase {
 
     /**
      * Tests saving and retrieving in the file area.
