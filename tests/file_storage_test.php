@@ -30,16 +30,9 @@ global $CFG;
 require_once($CFG->dirroot . '/webservice/tests/helpers.php');
 require_once($CFG->dirroot . '/report/datawarehouse/locallib.php');
 
-use core_external\external_api;
-use core_external\util as external_util;
 use externallib_advanced_testcase;
-use mod_glossary_external;
 
 defined('MOODLE_INTERNAL') || die();
-
-if ($CFG->branch < 402) { // In Moodle ≥ 4.2 it throws a @runInSeparateProcess warning otherwise.
-    require_once($CFG->libdir . '/externallib.php');
-}
 
 /**
  * Unit test for writing to and reading from file area.
@@ -55,10 +48,14 @@ class file_storage_test extends externallib_advanced_testcase {
 
     /**
      * Tests saving and retrieving in the file area.
+     *
      * @covers \report_datawarehouse\local\form\query
+     * @runInSeparateProcess
+     * @return void
      */
     public function test_file_area() {
         global $DB, $CFG;
+        require_once($CFG->libdir . '/externallib.php');
 
         $this->resetAfterTest();
         $this->setAdminUser();
