@@ -1,7 +1,13 @@
 # moodle-report_datawarehouse
-![](https://github.com/lucaboesch/moodle-report_datawarehouse/actions/workflows/moodle-plugin-ci.yml/badge.svg)
+[![Moodle Plugin CI](https://github.com/lucaboesch/moodle-report_datawarehouse/workflows/Moodle%20Plugin%20CI/badge.svg?branch=main)](https://github.com/lucaboesch/moodle-report_datawarehouse/actions?query=workflow%3A%22Moodle+Plugin+CI%22+branch%3Amain)
+[![PHP Support](https://img.shields.io/badge/php-7.4_--_8.2-blue)](https://github.com/lucaboesch/moodle-report_datawarehouse/actions)
+[![Moodle Support](https://img.shields.io/badge/Moodle-4.1--4.3-blue)](https://github.com/lucaboesch/moodle-report_datawarehouse/actions)
+[![License GPL-3.0](https://img.shields.io/github/license/lucaboesch/moodle-report_datawarehouse?color=lightgrey)](https://github.com/lucaboesch/moodle-report_datawarehouse/blob/main/LICENSE)
+[![GitHub contributors](https://img.shields.io/github/contributors/lucaboesch/moodle-report_datawarehouse)](https://github.com/lucaboesch/moodle-report_datawarehouseA/graphs/contributors)
 
-My MSc Thesis project
+My MSc Thesis project, see [How to design an extensible data warehouse – Set a foundation to transfer custom
+log data out of a LMS to a data warehouse in order to empower researchers to perform learning
+analysis](https://ma-showroom.dsl.digisus-lab.ch/lms-data_warehouse/).
 
 ## Installing via uploaded ZIP file ##
 

@@ -94,7 +94,7 @@ class query_disabled extends base {
      * @return array Mapping of object id.
      */
     public static function get_objectid_mapping() : array {
-        return array('db' => 'report_datawarehouse_queries', 'restore' => 'report_datawarehouse_queries');
+        return ['db' => 'report_datawarehouse_queries', 'restore' => 'report_datawarehouse_queries'];
     }
 
     /**

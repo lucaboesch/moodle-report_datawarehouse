@@ -62,7 +62,7 @@ class query_category {
             if ($filteredqueries) {
                 $queriesdata[] = [
                     'type' => $type,
-                    'queries' => $filteredqueries
+                    'queries' => $filteredqueries,
                 ];
             }
         }
