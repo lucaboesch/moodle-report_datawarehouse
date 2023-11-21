@@ -102,7 +102,7 @@ class backend_created extends base {
      * @return array Mapping of object id.
      */
     public static function get_objectid_mapping() : array {
-        return array('db' => 'report_datawarehouse_backends', 'restore' => 'report_datawarehouse_backends');
+        return ['db' => 'report_datawarehouse_backends', 'restore' => 'report_datawarehouse_backends'];
     }
 
     /**

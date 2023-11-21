@@ -31,15 +31,15 @@ $functions = [
         'description'  => 'List all files present in the report data warehouse filearea',
         'ajax'         => false,
         'type'         => 'read',
-        'capabilities' => 'report/datawarehouse:viewfiles'
+        'capabilities' => 'report/datawarehouse:viewfiles',
     ],
 ];
 
 // We define the services to install as pre-build services. A pre-build service is not editable by administrator.
-$services = array(
+$services = [
     'Report data warehouse functionalities' => [
         'functions' => ['report_datawarehouse_get_all_files'],
         'restrictedusers' => 0,
         'enabled' => 1,
-    ]
-);
+    ],
+];

@@ -97,7 +97,7 @@ class backend_deleted extends base {
      * @return array Mapping of object id.
      */
     public static function get_objectid_mapping() : array {
-        return array('db' => 'report_datawarehouse_bkends', 'restore' => 'report_datawarehouse_bkends');
+        return ['db' => 'report_datawarehouse_bkends', 'restore' => 'report_datawarehouse_bkends'];
     }
 
     /**

@@ -42,7 +42,7 @@ define(
 
                     return;
                 })
-                .catch();
+                .catch(notification.exception);
             },
 
             /**

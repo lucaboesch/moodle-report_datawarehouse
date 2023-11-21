@@ -107,7 +107,7 @@ class backend_category implements renderable, templatable {
                 'type' => $backendgroup['type'],
                 'title' => get_string($backendgroup['type'] . 'header', 'report_datawarehouse'),
                 'helpicon' => $output->help_icon($backendgroup['type'] . 'header', 'report_datawarehouse'),
-                'queries' => $queries
+                'queries' => $queries,
             ];
         }
 
@@ -133,7 +133,7 @@ class backend_category implements renderable, templatable {
             'linkref' => $this->get_link_reference(),
             'statistic' => $this->backendcategory->get_statistic(),
             'backendgroups' => $backendgroups,
-            'addbackendbutton' => $addbackendbutton
+            'addbackendbutton' => $addbackendbutton,
         ];
     }
 

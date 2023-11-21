@@ -97,7 +97,7 @@ class run_deleted extends base {
      * @return array Mapping of object id.
      */
     public static function get_objectid_mapping() : array {
-        return array('db' => 'report_datawarehouse_runs', 'restore' => 'report_datawarehouse_runs');
+        return ['db' => 'report_datawarehouse_runs', 'restore' => 'report_datawarehouse_runs'];
     }
 
     /**

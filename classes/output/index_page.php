@@ -180,7 +180,7 @@ class index_page implements renderable, templatable {
             'sesskey' => sesskey(),
             'allowmanagequeries' => $allowmanagequeries,
             'allowmanagebackends' => $allowmanagebackends,
-            'allowmanageruns' => $allowmanageruns
+            'allowmanageruns' => $allowmanageruns,
         ];
         return $data;
     }

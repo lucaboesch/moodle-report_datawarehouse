@@ -159,7 +159,7 @@ function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $ti
 
     $itemid = get_file_itemid() + 1;
 
-    $csvfilenames = array();
+    $csvfilenames = [];
     $csvtimestamp = null;
     $count = 0;
     $query = $DB->get_record('report_datawarehouse_queries', ['id' => $queryid]);
@@ -216,12 +216,12 @@ function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $ti
         'filearea' => 'data',
         'itemid' => $itemid,
         'filepath' => '/',
-        'filename' => $filename];
+        'filename' => $filename, ];
     $fs->create_file_from_pathname($filerecord, $tempfolder . '/' . $filename);
 
     if ($backend->username == '' && $backend->password == '' ) {
         // PUT to a Pre-Authenticated Requests enabled Oracle Object Storage Bucket.
-        $url = $DB->get_field('report_datawarehouse_bkends', 'url', array('id' => $backendid));
+        $url = $DB->get_field('report_datawarehouse_bkends', 'url', ['id' => $backendid]);
         // Initiate cURL object.
         $curl = curl_init();
         // Set your URL.
@@ -248,7 +248,7 @@ function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $ti
         curl_exec($curl);
     } else {
         // REST to a REST enabled table in an Oracle Autonomous Data Warehouse.
-        $url = $DB->get_field('report_datawarehouse_bkends', 'url', array('id' => $backend->id));
+        $url = $DB->get_field('report_datawarehouse_bkends', 'url', ['id' => $backend->id]);
         // Initiate cURL object with URL.
         $ch = curl_init($url);
 
@@ -256,14 +256,14 @@ function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $ti
         $fp = fopen($tempfolder . '/' . $filename, 'r');
         $headers = fgetcsv($fp); // Get column headers.
 
-        $data = array();
+        $data = [];
         while (($row = fgetcsv($fp)) !== false) {
             $data[] = array_combine($headers, $row);
         }
         fclose($fp);
 
         curl_setopt( $ch, CURLOPT_POSTFIELDS, trim(json_encode($data), '[]'));
-        curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+        curl_setopt( $ch, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
         // Return response instead of printing.
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
         // Send request.
@@ -321,8 +321,8 @@ function report_datawarehouse_scheduled_csv_name($reportid, $timestart) {
     global $CFG;
     $path = 'admin_report_datawarehouse/'.$reportid;
     make_upload_directory($path);
-    return array($CFG->dataroot.'/'.$path.'/'.date('%Y%m%d-%H%M%S', $timestart).'.csv',
-                 $timestart);
+    return [$CFG->dataroot.'/'.$path.'/'.date('%Y%m%d-%H%M%S', $timestart).'.csv',
+            $timestart, ];
 }
 
 /**
@@ -335,7 +335,7 @@ function report_datawarehouse_accumulating_csv_name($reportid) {
     global $CFG;
     $path = 'admin_report_datawarehouse/'.$reportid;
     make_upload_directory($path);
-    return array($CFG->dataroot.'/'.$path.'/accumulate.csv', 0);
+    return [$CFG->dataroot.'/'.$path.'/accumulate.csv', 0];
 }
 
 /**
@@ -347,10 +347,10 @@ function report_datawarehouse_accumulating_csv_name($reportid) {
 function report_datawarehouse_get_archive_times($report) {
     global $CFG;
     if ($report->runable == 'manual' || $report->singlerow) {
-        return array();
+        return [];
     }
     $files = glob($CFG->dataroot.'/admin_report_datawarehouse/'.$report->id.'/*.csv');
-    $archivetimes = array();
+    $archivetimes = [];
     foreach ($files as $file) {
         if (preg_match('|/(\d\d\d\d)(\d\d)(\d\d)-(\d\d)(\d\d)(\d\d)\.csv$|', $file, $matches)) {
             $archivetimes[] = mktime($matches[4], $matches[5], $matches[6], $matches[2],
@@ -370,7 +370,7 @@ function report_datawarehouse_get_archive_times($report) {
  * @return array|string|string[]
  */
 function report_datawarehouse_substitute_time_tokens($sql, $start, $end) {
-    return str_replace(array('%%STARTTIME%%', '%%ENDTIME%%'), array($start, $end), $sql);
+    return str_replace(['%%STARTTIME%%', '%%ENDTIME%%'], [$start, $end], $sql);
 }
 
 /**
@@ -448,11 +448,11 @@ function report_datawarehouse_downloadurl($reportid, $params = []) {
  * @throws coding_exception
  */
 function report_datawarehouse_capability_options() {
-    return array(
+    return [
         'report/datawarehouse:view' => get_string('anyonewhocanveiwthisreport', 'report_datawarehouse'),
         'moodle/site:viewreports' => get_string('userswhocanviewsitereports', 'report_datawarehouse'),
-        'moodle/site:config' => get_string('userswhocanconfig', 'report_datawarehouse')
-    );
+        'moodle/site:config' => get_string('userswhocanconfig', 'report_datawarehouse'),
+    ];
 }
 
 /**
@@ -464,13 +464,13 @@ function report_datawarehouse_capability_options() {
  */
 function report_datawarehouse_runable_options($type = null) {
     if ($type === 'manual') {
-        return array('manual' => get_string('manual', 'report_datawarehouse'));
+        return ['manual' => get_string('manual', 'report_datawarehouse')];
     }
-    return array('manual' => get_string('manual', 'report_datawarehouse'),
-                 'daily' => get_string('automaticallydaily', 'report_datawarehouse'),
-                 'weekly' => get_string('automaticallyweekly', 'report_datawarehouse'),
-                 'monthly' => get_string('automaticallymonthly', 'report_datawarehouse')
-    );
+    return ['manual' => get_string('manual', 'report_datawarehouse'),
+            'daily' => get_string('automaticallydaily', 'report_datawarehouse'),
+            'weekly' => get_string('automaticallyweekly', 'report_datawarehouse'),
+            'monthly' => get_string('automaticallymonthly', 'report_datawarehouse'),
+    ];
 }
 
 /**
@@ -479,7 +479,7 @@ function report_datawarehouse_runable_options($type = null) {
  * @return array
  */
 function report_datawarehouse_daily_at_options() {
-    $time = array();
+    $time = [];
     for ($h = 0; $h < 24; $h++) {
         $hour = ($h < 10) ? "0$h" : $h;
         $time[$h] = "$hour:00";
@@ -494,9 +494,9 @@ function report_datawarehouse_daily_at_options() {
  * @throws coding_exception
  */
 function report_datawarehouse_email_options() {
-    return array('emailnumberofrows' => get_string('emailnumberofrows', 'report_datawarehouse'),
+    return ['emailnumberofrows' => get_string('emailnumberofrows', 'report_datawarehouse'),
             'emailresults' => get_string('emailresults', 'report_datawarehouse'),
-    );
+    ];
 }
 
 /**
@@ -505,8 +505,8 @@ function report_datawarehouse_email_options() {
  * @return string[]
  */
 function report_datawarehouse_bad_words_list() {
-    return array('ALTER', 'CREATE', 'DELETE', 'DROP', 'GRANT', 'INSERT', 'INTO',
-                 'TRUNCATE', 'UPDATE');
+    return ['ALTER', 'CREATE', 'DELETE', 'DROP', 'GRANT', 'INSERT', 'INTO',
+            'TRUNCATE', 'UPDATE', ];
 }
 
 /**
@@ -527,7 +527,7 @@ function report_datawarehouse_contains_bad_word($string) {
  */
 function report_datawarehouse_log_delete($id) {
     $event = \report_datawarehouse\event\query_deleted::create(
-            array('objectid' => $id, 'context' => context_system::instance()));
+             ['objectid' => $id, 'context' => context_system::instance()]);
     $event->trigger();
 }
 
@@ -539,7 +539,7 @@ function report_datawarehouse_log_delete($id) {
  */
 function report_datawarehouse_log_edit($id) {
     $event = \report_datawarehouse\event\query_edited::create(
-            array('objectid' => $id, 'context' => context_system::instance()));
+            ['objectid' => $id, 'context' => context_system::instance()]);
     $event->trigger();
 }
 
@@ -551,7 +551,7 @@ function report_datawarehouse_log_edit($id) {
  */
 function report_datawarehouse_log_view($id) {
     $event = \report_datawarehouse\event\query_viewed::create(
-            array('objectid' => $id, 'context' => context_system::instance()));
+            ['objectid' => $id, 'context' => context_system::instance()]);
     $event->trigger();
 }
 
@@ -565,7 +565,7 @@ function report_datawarehouse_log_view($id) {
 function report_datawarehouse_get_reports_for($categoryid, $type) {
     global $DB;
     $records = $DB->get_records('report_datawarehouse_queries',
-        array('runable' => $type, 'categoryid' => $categoryid));
+        ['runable' => $type, 'categoryid' => $categoryid]);
 
     return report_datawarehouse_sort_reports_by_displayname($records);
 }
@@ -598,21 +598,21 @@ function report_datawarehouse_print_reports_for($reports, $type) {
 
         echo html_writer::start_tag('p');
         echo html_writer::tag('a', format_string($report->displayname),
-                              array('href' => report_datawarehouse_url('view.php?id='.$report->id))).
+                              ['href' => report_datawarehouse_url('view.php?id='.$report->id)]).
              ' '.report_datawarehouse_time_note($report, 'span');
         if ($canedit) {
             $imgedit = $OUTPUT->pix_icon('t/edit', get_string('edit'));
             $imgdelete = $OUTPUT->pix_icon('t/delete', get_string('delete'));
             echo ' '.html_writer::tag('span', get_string('availableto', 'report_datawarehouse',
                                       $capabilities[$report->capability]),
-                                      array('class' => 'admin_note')).' '.
+                                      ['class' => 'admin_note']).' '.
                  html_writer::tag('a', $imgedit,
                          ['title' => get_string('editreportx', 'report_datawarehouse', format_string($report->displayname)),
-                          'href' => report_datawarehouse_url('edit.php?id='.$report->id)]) . ' ' .
+                          'href' => report_datawarehouse_url('edit.php?id='.$report->id), ]) . ' ' .
                  html_writer::tag('a', $imgdelete,
-                            array('title' => get_string('deletereportx', 'report_datawarehouse',
+                            ['title' => get_string('deletereportx', 'report_datawarehouse',
                                 format_string($report->displayname)),
-                                'href' => report_datawarehouse_url('delete.php?id='.$report->id)));
+                                'href' => report_datawarehouse_url('delete.php?id='.$report->id), ]);
         }
         echo html_writer::end_tag('p');
         echo "\n";
@@ -659,7 +659,7 @@ function report_datawarehouse_get_table_headers($row) {
  * @return string[] cell contents for output.
  */
 function report_datawarehouse_display_row($row, $linkcolumns) {
-    $rowdata = array();
+    $rowdata = [];
     foreach ($row as $key => $value) {
         if (isset($linkcolumns[$key]) && $linkcolumns[$key] === -1) {
             // This row is the link url for another row.
@@ -700,7 +700,7 @@ function report_datawarehouse_time_note($report, $tag) {
         $note = get_string('notrunyet', 'report_datawarehouse');
     }
 
-    return html_writer::tag($tag, $note, array('class' => 'admin_note'));
+    return html_writer::tag($tag, $note, ['class' => 'admin_note']);
 }
 
 /**
@@ -734,7 +734,7 @@ function report_datawarehouse_prettify_column_names($row, $querysql) {
  */
 function report_datawarehouse_write_csv_row($handle, $data) {
     global $CFG;
-    $escapeddata = array();
+    $escapeddata = [];
     foreach ($data as $value) {
         if (!isset($value)) {
             $value = '';
@@ -798,12 +798,12 @@ function report_datawarehouse_get_daily_time_starts($timenow, $at) {
     $hours = $at;
     $minutes = 0;
     $dateparts = getdate($timenow);
-    return array(
+    return [
         mktime((int)$hours, (int)$minutes, 0,
                 $dateparts['mon'], $dateparts['mday'], $dateparts['year']),
         mktime((int)$hours, (int)$minutes, 0,
                 $dateparts['mon'], $dateparts['mday'] - 1, $dateparts['year']),
-        );
+        ];
 }
 
 /**
@@ -824,12 +824,12 @@ function report_datawarehouse_get_week_starts($timenow) {
     }
     $daysafterweekstart = ($dateparts['wday'] - $startofweek + 7) % 7;
 
-    return array(
+    return [
         mktime(0, 0, 0, $dateparts['mon'], $dateparts['mday'] - $daysafterweekstart,
                $dateparts['year']),
         mktime(0, 0, 0, $dateparts['mon'], $dateparts['mday'] - $daysafterweekstart - 7,
                $dateparts['year']),
-    );
+    ];
 }
 
 /**
@@ -841,10 +841,10 @@ function report_datawarehouse_get_week_starts($timenow) {
 function report_datawarehouse_get_month_starts($timenow) {
     $dateparts = getdate($timenow);
 
-    return array(
+    return [
         mktime(0, 0, 0, $dateparts['mon'], 1, $dateparts['year']),
         mktime(0, 0, 0, $dateparts['mon'] - 1, 1, $dateparts['year']),
-    );
+    ];
 }
 
 
@@ -883,7 +883,7 @@ function report_datawarehouse_get_queries() {
     global $DB;
     $queries = $DB->get_records_select('report_datawarehouse_queries', "enabled = ?", [1], 'sortorder');
 
-    $activequeries = array();
+    $activequeries = [];
     foreach ($queries as $id => $b) {
         $activequeries[] = $b;
     }
@@ -898,7 +898,7 @@ function report_datawarehouse_get_queries() {
  */
 function report_datawarehouse_get_query_used_by_id($queryid) {
     global $DB;
-    $queryinuse = $DB->get_field('report_datawarehouse_runs', 'COUNT(id)', array('queryid' => $queryid));
+    $queryinuse = $DB->get_field('report_datawarehouse_runs', 'COUNT(id)', ['queryid' => $queryid]);
     if ($queryinuse > 0) {
         return true;
     } else {
@@ -927,7 +927,7 @@ function report_datawarehouse_get_backends() {
     global $DB;
     $backends = $DB->get_records_select('report_datawarehouse_bkends', "enabled = ?", [1], 'sortorder');
 
-    $activebackends = array();
+    $activebackends = [];
     foreach ($backends as $id => $b) {
         $activebackends[] = $b;
     }
@@ -954,7 +954,7 @@ function report_datawarehouse_get_backend_name_by_id($backendid) {
  */
 function report_datawarehouse_get_backend_used_by_id($backendid) {
     global $DB;
-    $queryinuse = $DB->get_field('report_datawarehouse_runs', 'COUNT(id)', array('backendid' => $backendid));
+    $queryinuse = $DB->get_field('report_datawarehouse_runs', 'COUNT(id)', ['backendid' => $backendid]);
     if ($queryinuse > 0) {
         return true;
     } else {
@@ -1055,8 +1055,8 @@ function report_datawarehouse_get_message_no_data($report) {
     // Construct subject.
     $subject = get_string('emailsubjectnodata', 'report_datawarehouse',
             report_datawarehouse_plain_text_report_name($report));
-    $url = new moodle_url('/report/datawarehouse/view.php', array('id' => $report->id));
-    $link = get_string('emailink', 'report_datawarehouse', html_writer::tag('a', $url, array('href' => $url)));
+    $url = new moodle_url('/report/datawarehouse/view.php', ['id' => $report->id]);
+    $link = get_string('emailink', 'report_datawarehouse', html_writer::tag('a', $url, ['href' => $url]));
     $fullmessage = html_writer::tag('p', get_string('nodatareturned', 'report_datawarehouse') . ' ' . $link);
     $fullmessagehtml = $fullmessage;
 
@@ -1085,7 +1085,7 @@ function report_datawarehouse_get_message($report, $csvfilename) {
     $table->head = report_datawarehouse_read_csv_row($handle);
     $countrows = 0;
     while ($row = report_datawarehouse_read_csv_row($handle)) {
-        $rowdata = array();
+        $rowdata = [];
         foreach ($row as $value) {
             $rowdata[] = $value;
         }
@@ -1117,8 +1117,8 @@ function report_datawarehouse_get_message($report, $csvfilename) {
     } else {
         $returnrows = html_writer::tag('span', get_string('emailrows', 'report_datawarehouse', $countrows));
     }
-    $url = new moodle_url('/report/datawarehouse/view.php', array('id' => $report->id));
-    $link = get_string('emailink', 'report_datawarehouse', html_writer::tag('a', $url, array('href' => $url)));
+    $url = new moodle_url('/report/datawarehouse/view.php', ['id' => $report->id]);
+    $link = get_string('emailink', 'report_datawarehouse', html_writer::tag('a', $url, ['href' => $url]));
     $fullmessage .= html_writer::tag('p', $returnrows . ' ' . $link);
 
     // Construct message in html.
@@ -1165,7 +1165,7 @@ function report_datawarehouse_email_report($report, $csvfilename = null) {
     // Email all recipients.
     $userids = preg_split("/[\s,]+/", $report->emailto);
     foreach ($userids as $userid) {
-        $recipient = $DB->get_record('user', array('id' => $userid), '*', MUST_EXIST);
+        $recipient = $DB->get_record('user', ['id' => $userid], '*', MUST_EXIST);
         $messageid = report_datawarehouse_send_email_notification($recipient, $message);
         if (!$messageid) {
             mtrace(get_string('emailsentfailed', 'report_datawarehouse', fullname($recipient)));
@@ -1182,9 +1182,9 @@ function report_datawarehouse_email_report($report, $csvfilename = null) {
  */
 function report_datawarehouse_get_ready_to_run_daily_reports($timenow) {
     global $DB;
-    $reports = $DB->get_records_select('report_datawarehouse_queries', "runable = ?", array('daily'), 'id');
+    $reports = $DB->get_records_select('report_datawarehouse_queries', "runable = ?", ['daily'], 'id');
 
-    $reportstorun = array();
+    $reportstorun = [];
     foreach ($reports as $id => $r) {
         // Check whether the report is ready to run.
         if (!report_datawarehouse_is_daily_report_ready($r, $timenow)) {

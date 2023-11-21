@@ -84,11 +84,11 @@ class file_storage_test extends externallib_advanced_testcase {
 
         // Control that it exists.
         $files = $DB->get_records('files', ['component' => $component, 'filearea' => $filearea,
-            'contextid' => $context, 'itemid' => $newitemid, 'filename' => 'file.txt']);
+            'contextid' => $context, 'itemid' => $newitemid, 'filename' => 'file.txt', ]);
         $this->assertEquals(1, count($files));
 
         // Now retrieve it.
-        $expectedfiles[] = array(
+        $expectedfiles[] = [
             'filename' => 'file.txt',
             'filepath' => '/',
             'fileurl' => "{$CFG->wwwroot}/webservice/pluginfile.php/{$context}/{$component}/{$filearea}/{$newitemid}/file.txt",
@@ -96,7 +96,7 @@ class file_storage_test extends externallib_advanced_testcase {
             'filesize' => $filesize,
             'mimetype' => 'text/plain',
             'isexternalfile' => false,
-        );
+        ];
 
         // Get all the files for the area.
         $files = \external_util::get_area_files($context, $component, $filearea, false);
