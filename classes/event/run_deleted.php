@@ -45,7 +45,7 @@ class run_deleted extends base {
      * @param \context_system $context Context system.
      * @return base
      */
-    public static function create_strict(string $id, \context_system $context) : base {
+    public static function create_strict(string $id, \context_system $context): base {
         global $USER;
 
         return self::create([
@@ -96,7 +96,7 @@ class run_deleted extends base {
      *
      * @return array Mapping of object id.
      */
-    public static function get_objectid_mapping() : array {
+    public static function get_objectid_mapping(): array {
         return ['db' => 'report_datawarehouse_runs', 'restore' => 'report_datawarehouse_runs'];
     }
 
@@ -106,7 +106,7 @@ class run_deleted extends base {
      *
      * @return array List of mapping of other ids.
      */
-    public static function get_other_mapping() : array {
+    public static function get_other_mapping(): array {
         return [];
     }
 }

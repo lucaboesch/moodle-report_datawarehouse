@@ -69,7 +69,7 @@ class backend_category implements renderable, templatable {
      */
     public function __construct(\report_datawarehouse\local\backend_category $backendcategory, context $context,
         bool $expandable = false, int $showbackendcat = 0, int $hidebackendcat = 0, bool $showonlythislink = false,
-        bool $addnewbackendbtn = true, moodle_url $returnurl = null) {
+        bool $addnewbackendbtn = true, ?moodle_url $returnurl = null) {
         $this->backendcategory = $backendcategory;
         $this->context = $context;
         $this->expandable = $expandable;

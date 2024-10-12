@@ -98,7 +98,7 @@ class backend extends persistent {
      *
      * @return bool
      */
-    public function can_delete() : bool {
+    public function can_delete(): bool {
         $result = true;
 
 // phpcs:disable

@@ -127,7 +127,7 @@ class backend_controller {
      *
      * @return \report_datawarehouse\backend
      */
-    protected function get_instance($id = 0, \stdClass $data = null) {
+    protected function get_instance($id = 0, ?\stdClass $data = null) {
         return new backend($id, $data);
     }
 
@@ -157,7 +157,7 @@ class backend_controller {
      * Returns a text for create new record button.
      * @return string
      */
-    protected function get_create_button_text() : string {
+    protected function get_create_button_text(): string {
         return get_string('addbackend', 'report_datawarehouse');
     }
 
@@ -168,7 +168,7 @@ class backend_controller {
      *
      * @return \report_datawarehouse\local\form\backend
      */
-    protected function get_form($instance) : \report_datawarehouse\local\form\backend {
+    protected function get_form($instance): \report_datawarehouse\local\form\backend {
         global $PAGE;
 
         return new \report_datawarehouse\local\form\backend($PAGE->url->out(false), ['persistent' => $instance]);
@@ -178,7 +178,7 @@ class backend_controller {
      * View backend heading string.
      * @return string
      */
-    protected function get_view_heading() : string {
+    protected function get_view_heading(): string {
         return get_string('managebackends', 'report_datawarehouse');
     }
 
@@ -186,7 +186,7 @@ class backend_controller {
      * New backend heading string.
      * @return string
      */
-    protected function get_new_heading() : string {
+    protected function get_new_heading(): string {
         return get_string('newbackend', 'report_datawarehouse');
     }
 
@@ -194,7 +194,7 @@ class backend_controller {
      * Edit backend heading string.
      * @return string
      */
-    protected function get_edit_heading() : string {
+    protected function get_edit_heading(): string {
         return get_string('editbackend', 'report_datawarehouse');
     }
 
@@ -202,7 +202,7 @@ class backend_controller {
      * Returns base URL for the manager.
      * @return string
      */
-    public static function get_base_url() : string {
+    public static function get_base_url(): string {
         return '/report/datawarehouse/backend.php';
     }
 

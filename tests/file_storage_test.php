@@ -44,7 +44,7 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright   2023 Luca Bösch <luca.boesch@bfh.ch>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class file_storage_test extends externallib_advanced_testcase {
+final class file_storage_test extends externallib_advanced_testcase {
 
     /**
      * Tests saving and retrieving in the file area.
@@ -53,9 +53,8 @@ class file_storage_test extends externallib_advanced_testcase {
      * @runInSeparateProcess
      * @return void
      */
-    public function test_file_area() {
+    public function test_file_area(): void {
         global $DB, $CFG;
-        require_once($CFG->libdir . '/externallib.php');
 
         $this->resetAfterTest();
         $this->setAdminUser();
@@ -88,22 +87,35 @@ class file_storage_test extends externallib_advanced_testcase {
         $this->assertEquals(1, count($files));
 
         // Now retrieve it.
-        $expectedfiles[] = [
-            'filename' => 'file.txt',
-            'filepath' => '/',
-            'fileurl' => "{$CFG->wwwroot}/webservice/pluginfile.php/{$context}/{$component}/{$filearea}/{$newitemid}/file.txt",
-            'timemodified' => $timemodified,
-            'filesize' => $filesize,
-            'mimetype' => 'text/plain',
-            'isexternalfile' => false,
-        ];
+        if ($CFG->version < 2023101000) {
+            $expectedfiles[] = [
+                'filename' => 'file.txt',
+                'filepath' => '/',
+                'fileurl' => "{$CFG->wwwroot}/webservice/pluginfile.php/{$context}/{$component}/{$filearea}/{$newitemid}/file.txt",
+                'timemodified' => (string) $timemodified,
+                'filesize' => (string) $filesize,
+                'mimetype' => 'text/plain',
+                'isexternalfile' => false,
+            ];
+        } else {
+            $expectedfiles[] = [
+                'filename' => 'file.txt',
+                'filepath' => '/',
+                'fileurl' => "{$CFG->wwwroot}/webservice/pluginfile.php/{$context}/{$component}/{$filearea}/{$newitemid}/file.txt",
+                'timemodified' => (string) $timemodified,
+                'filesize' => (string) $filesize,
+                'mimetype' => 'text/plain',
+                'isexternalfile' => false,
+                'icon' => 'f/text',
+            ];
+        }
 
         // Get all the files for the area.
-        $files = \external_util::get_area_files($context, $component, $filearea, false);
+        $files = \core_external\util::get_area_files($context, $component, $filearea, false);
         $this->assertEquals($expectedfiles, $files);
 
         // Get just the file indicated by $itemid.
-        $files = \external_util::get_area_files($context, $component, $filearea, $newitemid);
+        $files = \core_external\util::get_area_files($context, $component, $filearea, $newitemid);
         $this->assertEquals($expectedfiles, $files);
     }
 }
