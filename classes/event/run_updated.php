@@ -37,7 +37,7 @@ class run_updated extends base {
      * @param \context_system $context Context system.
      * @return base
      */
-    public static function create_strict(\report_datawarehouse\run $run, \context_system $context) : base {
+    public static function create_strict(\report_datawarehouse\run $run, \context_system $context): base {
         global $USER;
         $tid = $run->get('id');
 
@@ -93,7 +93,7 @@ class run_updated extends base {
      *
      * @return array Mapping of object id.
      */
-    public static function get_objectid_mapping() : array {
+    public static function get_objectid_mapping(): array {
         return ['db' => 'report_datawarehouse_runs', 'restore' => 'report_datawarehouse_runs'];
     }
 
@@ -103,7 +103,7 @@ class run_updated extends base {
      *
      * @return array List of mapping of other ids.
      */
-    public static function get_other_mapping() : array {
+    public static function get_other_mapping(): array {
         return [];
     }
 }

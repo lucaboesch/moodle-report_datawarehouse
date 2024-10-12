@@ -86,7 +86,7 @@ class backend_list extends \flexible_table {
      * @param \report_datawarehouse\backend $data Backend for this row.
      * @return string
      */
-    protected function col_name(backend $data) : string {
+    protected function col_name(backend $data): string {
         return \html_writer::link(
             new \moodle_url(backend_controller::get_base_url(), [
                 'id' => $data->get('id'),
@@ -102,7 +102,7 @@ class backend_list extends \flexible_table {
      * @param \report_datawarehouse\backend $data Backend for this row.
      * @return string
      */
-    protected function col_description(backend $data) : string {
+    protected function col_description(backend $data): string {
         return $data->get('description');
     }
 
@@ -132,7 +132,7 @@ class backend_list extends \flexible_table {
      * @param \report_datawarehouse\backend $data Backend for this row.
      * @return string
      */
-    protected function col_actions(backend $data) : string {
+    protected function col_actions(backend $data): string {
         $actions = [];
 
         $actions[] = helper::format_icon_link(

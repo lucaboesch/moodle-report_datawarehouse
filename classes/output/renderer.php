@@ -41,7 +41,7 @@ class renderer extends plugin_renderer_base {
      * @throws \coding_exception
      * @throws \moodle_exception
      */
-    public function render_report_actions(stdClass $report, stdClass $category, context $context):string {
+    public function render_report_actions(stdClass $report, stdClass $category, context $context): string {
         if (has_capability('report/customsql:definequeries', $context)) {
             $reporturl = report_datawarehouse_url('view.php', ['id' => $report->id]);
             $editaction = $this->action_link(

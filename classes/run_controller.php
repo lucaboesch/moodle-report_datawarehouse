@@ -139,7 +139,7 @@ class run_controller {
      *
      * @return \report_datawarehouse\run
      */
-    protected function get_instance($id = 0, \stdClass $data = null) {
+    protected function get_instance($id = 0, ?\stdClass $data = null) {
         return new run($id, $data);
     }
 
@@ -170,7 +170,7 @@ class run_controller {
      * Returns a text for create new record button.
      * @return string
      */
-    protected function get_create_button_text() : string {
+    protected function get_create_button_text(): string {
         return get_string('addrun', 'report_datawarehouse');
     }
 
@@ -181,7 +181,7 @@ class run_controller {
      *
      * @return \report_datawarehouse\local\form\run
      */
-    protected function get_form($instance) : \report_datawarehouse\local\form\run {
+    protected function get_form($instance): \report_datawarehouse\local\form\run {
         global $PAGE;
 
         return new \report_datawarehouse\local\form\run($PAGE->url->out(false), ['persistent' => $instance]);
@@ -191,7 +191,7 @@ class run_controller {
      * View run heading string.
      * @return string
      */
-    protected function get_view_heading() : string {
+    protected function get_view_heading(): string {
         return get_string('manageruns', 'report_datawarehouse');
     }
 
@@ -199,7 +199,7 @@ class run_controller {
      * New run heading string.
      * @return string
      */
-    protected function get_new_heading() : string {
+    protected function get_new_heading(): string {
         return get_string('newrun', 'report_datawarehouse');
     }
 
@@ -207,7 +207,7 @@ class run_controller {
      * Edit run heading string.
      * @return string
      */
-    protected function get_edit_heading() : string {
+    protected function get_edit_heading(): string {
         return get_string('editrun', 'report_datawarehouse');
     }
 
@@ -215,7 +215,7 @@ class run_controller {
      * Returns base URL for the manager.
      * @return string
      */
-    public static function get_base_url() : string {
+    public static function get_base_url(): string {
         return '/report/datawarehouse/run.php';
     }
 

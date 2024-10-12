@@ -86,7 +86,7 @@ class query_list extends \flexible_table {
      * @param \report_datawarehouse\query $data Query for this row.
      * @return string
      */
-    protected function col_name(query $data) : string {
+    protected function col_name(query $data): string {
         return \html_writer::link(
             new \moodle_url(query_controller::get_base_url(), [
                 'id' => $data->get('id'),
@@ -102,7 +102,7 @@ class query_list extends \flexible_table {
      * @param \report_datawarehouse\query $data Query for this row.
      * @return string
      */
-    protected function col_description(query $data) : string {
+    protected function col_description(query $data): string {
         return $data->get('description');
     }
 
@@ -132,7 +132,7 @@ class query_list extends \flexible_table {
      * @param \report_datawarehouse\query $data Query for this row.
      * @return string
      */
-    protected function col_actions(query $data) : string {
+    protected function col_actions(query $data): string {
         $actions = [];
 
         $actions[] = helper::format_icon_link(

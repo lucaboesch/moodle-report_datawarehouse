@@ -127,7 +127,7 @@ class query_controller {
      *
      * @return \report_datawarehouse\query
      */
-    protected function get_instance($id = 0, \stdClass $data = null) {
+    protected function get_instance($id = 0, ?\stdClass $data = null) {
         return new query($id, $data);
     }
 
@@ -157,7 +157,7 @@ class query_controller {
      * Returns a text for create new record button.
      * @return string
      */
-    protected function get_create_button_text() : string {
+    protected function get_create_button_text(): string {
         return get_string('addquery', 'report_datawarehouse');
     }
 
@@ -168,7 +168,7 @@ class query_controller {
      *
      * @return \report_datawarehouse\local\form\query
      */
-    protected function get_form($instance) : \report_datawarehouse\local\form\query {
+    protected function get_form($instance): \report_datawarehouse\local\form\query {
         global $PAGE;
 
         return new \report_datawarehouse\local\form\query($PAGE->url->out(false), ['persistent' => $instance]);
@@ -178,7 +178,7 @@ class query_controller {
      * View query heading string.
      * @return string
      */
-    protected function get_view_heading() : string {
+    protected function get_view_heading(): string {
         return get_string('managequeries', 'report_datawarehouse');
     }
 
@@ -186,7 +186,7 @@ class query_controller {
      * New query heading string.
      * @return string
      */
-    protected function get_new_heading() : string {
+    protected function get_new_heading(): string {
         return get_string('newquery', 'report_datawarehouse');
     }
 
@@ -194,7 +194,7 @@ class query_controller {
      * Edit query heading string.
      * @return string
      */
-    protected function get_edit_heading() : string {
+    protected function get_edit_heading(): string {
         return get_string('editquery', 'report_datawarehouse');
     }
 
@@ -202,7 +202,7 @@ class query_controller {
      * Returns base URL for the manager.
      * @return string
      */
-    public static function get_base_url() : string {
+    public static function get_base_url(): string {
         return '/report/datawarehouse/query.php';
     }
 

@@ -37,7 +37,7 @@ class query_disabled extends base {
      * @param \context_system $context Context system.
      * @return base
      */
-    public static function create_strict(\report_datawarehouse\query $query, \context_system $context) : base {
+    public static function create_strict(\report_datawarehouse\query $query, \context_system $context): base {
         global $USER;
         $tid = $query->get('id');
 
@@ -93,7 +93,7 @@ class query_disabled extends base {
      *
      * @return array Mapping of object id.
      */
-    public static function get_objectid_mapping() : array {
+    public static function get_objectid_mapping(): array {
         return ['db' => 'report_datawarehouse_queries', 'restore' => 'report_datawarehouse_queries'];
     }
 
@@ -103,7 +103,7 @@ class query_disabled extends base {
      *
      * @return array List of mapping of other ids.
      */
-    public static function get_other_mapping() : array {
+    public static function get_other_mapping(): array {
         return [];
     }
 }

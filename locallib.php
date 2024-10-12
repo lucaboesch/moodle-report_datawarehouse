@@ -856,7 +856,7 @@ function report_datawarehouse_get_month_starts($timenow) {
  * @param string $itemid The item id
  * @throws coding_exception
  */
-function report_datawarehouse_get_filename(int $cmid, stdClass $query, string $itemid) :string {
+function report_datawarehouse_get_filename(int $cmid, stdClass $query, string $itemid): string {
     global $USER;
     $timezone = \core_date::get_user_timezone_object();
     $timestamp = time();
@@ -1320,7 +1320,7 @@ function report_datawarehouse_sort_reports_by_displayname(array $records): array
  * @return int the highest itemid
  * @throws dml_exception
  */
-function get_file_itemid() :int {
+function get_file_itemid(): int {
     global $DB;
     $highestitemid = $DB->get_field_sql("SELECT max(itemid) FROM {files} WHERE component = 'report_datawarehouse'
         AND filearea = 'data'");
@@ -1337,7 +1337,7 @@ function get_file_itemid() :int {
  * @throws file_exception
  * @throws stored_file_creation_exception
  */
-function write_datawarehouse_file($filerecord, $content) :bool {
+function write_datawarehouse_file($filerecord, $content): bool {
     $fs = get_file_storage();
     // Create a file and save it.
     if (($fs->create_file_from_string($filerecord, $content)) != null) {

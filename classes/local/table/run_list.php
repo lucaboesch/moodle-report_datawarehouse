@@ -86,7 +86,7 @@ class run_list extends \flexible_table {
      * @param \report_datawarehouse\run $data Query for this row.
      * @return string
      */
-    protected function col_name(run $data) : string {
+    protected function col_name(run $data): string {
         return \html_writer::link(
             new \moodle_url(run_controller::get_base_url(), [
                 'id' => $data->get('id'),
@@ -102,7 +102,7 @@ class run_list extends \flexible_table {
      * @param \report_datawarehouse\run $data Query for this row.
      * @return string
      */
-    protected function col_description(run $data) : string {
+    protected function col_description(run $data): string {
         return $data->get('description');
     }
 
@@ -132,7 +132,7 @@ class run_list extends \flexible_table {
      * @param \report_datawarehouse\run $data Query for this row.
      * @return string
      */
-    protected function col_actions(run $data) : string {
+    protected function col_actions(run $data): string {
         $actions = [];
 
         $actions[] = helper::format_icon_link(
