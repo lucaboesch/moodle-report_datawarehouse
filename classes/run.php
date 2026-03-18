@@ -33,7 +33,6 @@ use core\persistent;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class run extends persistent {
-
     /** Table name for the persistent. */
     const TABLE = 'report_datawarehouse_runs';
 
@@ -104,5 +103,4 @@ class run extends persistent {
 
         return $result;
     }
-
 }

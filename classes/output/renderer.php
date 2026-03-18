@@ -30,7 +30,6 @@ use stdClass;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class renderer extends plugin_renderer_base {
-
     /**
      * Output the standard action icons (edit, delete and back to list) for a report.
      *
@@ -47,17 +46,23 @@ class renderer extends plugin_renderer_base {
             $editaction = $this->action_link(
                 report_datawarehouse_url('edit.php', ['id' => $report->id, 'returnurl' => $reporturl->out_as_local_url(false)]),
                 $this->pix_icon('t/edit', '') . ' ' .
-                get_string('editreportx', 'report_datawarehouse', format_string($report->displayname)));
+                get_string('editreportx', 'report_datawarehouse', format_string($report->displayname))
+            );
             $deleteaction = $this->action_link(
                 report_datawarehouse_url('delete.php', ['id' => $report->id, 'returnurl' => $reporturl->out_as_local_url(false)]),
                 $this->pix_icon('t/delete', '') . ' ' .
-                get_string('deletereportx', 'report_datawarehouse', format_string($report->displayname)));
+                get_string('deletereportx', 'report_datawarehouse', format_string($report->displayname))
+            );
         }
 
         $backtocategoryaction = $this->action_link(
-            report_datawarehouse_url('query_category.php', ['id' => $category->id]),
+            report_datawarehouse_url(
+                'query_category.php',
+                ['id' => $category->id]
+            ),
             $this->pix_icon('t/left', '') .
-            get_string('backtocategory', 'report_datawarehouse', $category->name));
+            get_string('backtocategory', 'report_datawarehouse', $category->name)
+        );
 
         $context = [
             'editaction' => $editaction,

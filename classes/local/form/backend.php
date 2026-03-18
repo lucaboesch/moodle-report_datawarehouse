@@ -31,7 +31,6 @@ namespace report_datawarehouse\local\form;
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backend extends \core\form\persistent {
-
     /** @var string Persistent class name. */
     protected static $persistentclass = 'report_datawarehouse\\backend';
 

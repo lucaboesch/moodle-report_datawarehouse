@@ -81,9 +81,19 @@ class index_page implements renderable, templatable {
      * @param int $showbackendcat Showing Backend category Id.
      * @param int $hidebackendcat Hiding Backend category Id.
      */
-    public function __construct(array $querycategories, array $backendcategories, array $queries, array $backends, array $runs,
-        context $context, moodle_url $returnurl, int $showquerycat = 0, int $hidequerycat = 0, int $showbackendcat = 0,
-        int $hidebackendcat = 0) {
+    public function __construct(
+        array $querycategories,
+        array $backendcategories,
+        array $queries,
+        array $backends,
+        array $runs,
+        context $context,
+        moodle_url $returnurl,
+        int $showquerycat = 0,
+        int $hidequerycat = 0,
+        int $showbackendcat = 0,
+        int $hidebackendcat = 0
+    ) {
         $this->querycategories = $querycategories;
         $this->backendcategories = $backendcategories;
         $this->queries = $queries;
@@ -133,20 +143,39 @@ class index_page implements renderable, templatable {
         }
         $addquerybutton = '';
         if (has_capability('report/datawarehouse:managequeries', $this->context)) {
-            $addquerybutton = $output->single_button(report_datawarehouse_url('query.php', ['returnurl' => $this->returnurl]),
-                get_string('addquery', 'report_datawarehouse'), 'post', ['class' => 'mt-1 mb-3']);
+            $addquerybutton = $output->single_button(
+                report_datawarehouse_url(
+                    'query.php',
+                    ['returnurl' => $this->returnurl]
+                ),
+                get_string('addquery', 'report_datawarehouse'),
+                'post',
+                ['class' => 'mt-1 mb-3']
+            );
         }
         $addbackendbutton = '';
         if (has_capability('report/datawarehouse:managebackends', $this->context)) {
-            $addbackendbutton =
-                $output->single_button(report_datawarehouse_url('backend.php', ['returnurl' => $this->returnurl]),
-                    get_string('addbackend', 'report_datawarehouse'), 'post', ['class' => 'mt-1 mb-3']);
+            $addbackendbutton = $output->single_button(
+                report_datawarehouse_url(
+                    'backend.php',
+                    ['returnurl' => $this->returnurl]
+                ),
+                get_string('addbackend', 'report_datawarehouse'),
+                'post',
+                ['class' => 'mt-1 mb-3']
+            );
         }
         $addrunbutton = '';
         if (has_capability('report/datawarehouse:manageruns', $this->context)) {
-            $addrunbutton =
-                $output->single_button(report_datawarehouse_url('run.php', ['returnurl' => $this->returnurl]),
-                    get_string('addrun', 'report_datawarehouse'), 'post', ['class' => 'mt-1 mb-3']);
+            $addrunbutton = $output->single_button(
+                report_datawarehouse_url(
+                    'run.php',
+                    ['returnurl' => $this->returnurl]
+                ),
+                get_string('addrun', 'report_datawarehouse'),
+                'post',
+                ['class' => 'mt-1 mb-3']
+            );
         }
         // phpcs:disable
         /*

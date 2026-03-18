@@ -45,7 +45,6 @@ defined('MOODLE_INTERNAL') || die();
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 final class file_storage_test extends externallib_advanced_testcase {
-
     /**
      * Tests saving and retrieving in the file area.
      *

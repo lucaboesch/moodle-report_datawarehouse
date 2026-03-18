@@ -87,7 +87,7 @@ class backend_controller {
      */
     public function execute($action) {
 
-        switch($action) {
+        switch ($action) {
             case self::ACTION_ADD:
             case self::ACTION_EDIT:
                 $this->edit($action, optional_param('id', null, PARAM_INT));
@@ -364,7 +364,9 @@ class backend_controller {
     protected function print_add_button() {
         echo $this->output->single_button(
             new \moodle_url(static::get_base_url(), ['action' => self::ACTION_ADD]),
-            $this->get_create_button_text(), 'post', ['class' => 'mb-3']
+            $this->get_create_button_text(),
+            'post',
+            ['class' => 'mb-3']
         );
     }
 
@@ -447,5 +449,4 @@ class backend_controller {
             \context_system::instance()
         )->trigger();
     }
-
 }
