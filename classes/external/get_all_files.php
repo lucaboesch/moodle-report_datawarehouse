@@ -55,19 +55,69 @@ class get_all_files extends \external_api {
      * @return array of files
      */
     public static function execute() {
-        $context = \context_system::instance()->id;
+        global $DB;
+
+        self::validate_parameters(self::execute_parameters(), []);
+
+        // Establish the base execution context as system.
+        $systemcontext = \context_system::instance();
+        self::validate_context($systemcontext);
+
         $component = 'report_datawarehouse';
         $filearea = 'data';
+        $files = [];
 
-        // Get all the files for the area.
-        $files = \external_util::get_area_files($context, $component, $filearea, false);
+        // Fetch all distinct context IDs where data warehouse files currently exist.
+        $sql = "SELECT DISTINCT contextid 
+                  FROM {files} 
+                 WHERE component = :component 
+                   AND filearea = :filearea 
+                   AND filename != '.'";
+        
+        $contextids = $DB->get_fieldset_sql($sql, [
+            'component' => $component, 
+            'filearea' => $filearea
+        ]);
+
+        // Iterate over found contexts, check capability, and fetch files.
+        foreach ($contextids as $cid) {
+            $ctx = \context::instance_by_id($cid, IGNORE_MISSING);
+            
+            // Only pull files from this context if the user has the capability to view them.
+            if ($ctx && has_capability('report/datawarehouse:viewfiles', $ctx)) {
+                $contextfiles = \core_external\util::get_area_files($cid, $component, $filearea, false);
+                $files = array_merge($files, $contextfiles);
+            }
+        }
 
         // Fiddle in the itemid which is in the fileurl.
         foreach ($files as &$file) {
-            $parts = explode('/', $file["fileurl"]);
-            $secondlastpart = (int) count($parts) - 2;
-            $file["itemid"] = (int) $parts[$secondlastpart];
+            $file['itemid'] = 0;
+
+            if (empty($file['fileurl'])) {
+                continue;
+            }
+
+            $path = parse_url($file['fileurl'], PHP_URL_PATH);
+            if ($path === null || $path === false || $path === '') {
+                continue;
+            }
+
+            $parts = explode('/', trim($path, '/'));
+            $filenameindex = array_key_last($parts);
+            if ($filenameindex === null || $filenameindex < 1) {
+                continue;
+            }
+
+            // Moodle file URLs are structured: /pluginfile.php/contextid/component/area/itemid/filename
+            // So the itemid is the segment immediately preceding the filename.
+            $itemidcandidate = $parts[$filenameindex - 1];
+            if (ctype_digit((string) $itemidcandidate)) {
+                $file['itemid'] = (int) $itemidcandidate;
+            }
         }
+        unset($file);
+
         return $files;
     }
 

@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template report_datawarehouse/run_category
+    @template report_datawarehouse/run
 
     Template to render a query_category.
 
@@ -68,7 +68,7 @@
                     <td>{{ backendname }}</td>
                     <td>{{ courseid }}</td>
                     <td>{{ cmid }}</td>
-                    <td>{{ lastrunstring }}<div class="run-runnow"><a href="run.php?id={{ id }}&amp;action=run">{{#str}}runnow, report_datawarehouse{{/str}}</a></div></td>
+                    <td>{{ lastrunstring }}<div class="run-runnow"><a href="run.php?id={{ id }}&amp;action=run&amp;sesskey={{ sesskey }}">{{#str}}runnow, report_datawarehouse{{/str}}</a></div><div class="run-download"><a href="run.php?id={{ id }}&amp;action=download">{{#str}}download, report_datawarehouse{{/str}}</a></div></td>
                     {{#allowmanageruns}}<td><a href="run.php?id={{ id }}&amp;action=edit" class="action-icon">{{#pix}}
                         t/edit, core, {{#str}}edit{{/str}}{{/pix}}</a>
                     {{#inuse}}{{/inuse}}{{^inuse}}<a href="run.php?id={{ id }}&amp;action=delete&sesskey={{ sesskey }}" class="action-icon" data-action="rundelete">{{#pix}}
