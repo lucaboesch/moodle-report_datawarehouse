@@ -35,6 +35,7 @@ $string['backend'] = 'Backend';
 $string['backenddeleted'] = 'The data warehouse report backend has successfully been deleted';
 $string['cantdeletebackend'] = 'The backend can\'t be deleted.';
 $string['cantdeletequery'] = 'The query can\'t be deleted.';
+$string['cantdeleterun'] = 'The run can\'t be deleted.';
 $string['canteditbackend'] = 'The backend can\'t be edited.';
 $string['canteditquery'] = 'The query can\'t be edited.';
 $string['canteditrun'] = 'The run can\'t be edited.';
@@ -53,6 +54,7 @@ $string['datawarehouse:manageruns'] = 'Manage data warehouse report runs';
 $string['datawarehouse:view'] = 'View a data warehouse report file';
 $string['datawarehouse:viewfiles'] = 'View data warehouse report files overview';
 $string['description'] = 'Description';
+$string['download'] = 'Download CSV';
 $string['editbackend'] = 'Edit backend';
 $string['editquery'] = 'Edit query';
 $string['editrun'] = 'Edit run';
@@ -97,8 +99,8 @@ $string['querynote'] = '<ul>
 $string['querysql'] = 'Query';
 $string['rundeleted'] = 'The data warehouse report run has successfully been deleted';
 $string['runnow'] = 'Run now';
-$string['runsnote'] = '<div class="mb-6"><br>Combine a prepared query and backend with a course module (a quiz, an assignment etc.) and a course for which the run should be executed.</br>
-The course module and the course field have no chooser on purpose, look up the values in the URL or the breadcrumb/course/secondary navigation.</p></div>';
+$string['runsnote'] = '<div class="mb-3"><p>Combine a prepared query and backend with a course module (a quiz, an assignment etc.) and a course for which the run should be executed.</p>
+<p>The course module and the course field have no chooser on purpose, look up the values in the URL or the breadcrumb/course/secondary navigation.</p></div>';
 $string['showonlythiscategory'] = 'Show only {$a}';
 $string['url'] = 'URL';
 $string['used'] = 'In use';
