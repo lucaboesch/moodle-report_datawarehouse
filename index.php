@@ -61,8 +61,19 @@ $showbackendcat = optional_param('showbackendcat', 0, PARAM_INT);
 $hidebackendcat = optional_param('hidebackendcat', 0, PARAM_INT);
 $returnurl = report_datawarehouse_url('index.php');
 
-$widget = new \report_datawarehouse\output\index_page($querycategories, $backendcategories, $queries, $backends, $runs, $context,
-    $returnurl, $showquerycat, $hidequerycat, $showbackendcat, $hidebackendcat);
+$widget = new \report_datawarehouse\output\index_page(
+    $querycategories,
+    $backendcategories,
+    $queries,
+    $backends,
+    $runs,
+    $context,
+    $returnurl,
+    $showquerycat,
+    $hidequerycat,
+    $showbackendcat,
+    $hidebackendcat
+);
 $output = $PAGE->get_renderer('report_datawarehouse');
 
 echo $OUTPUT->header();

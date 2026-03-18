@@ -35,7 +35,6 @@ require_once(dirname(__FILE__) . '/../../../locallib.php');
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class run extends \core\form\persistent {
-
     /** @var string Persistent class name. */
     protected static $persistentclass = 'report_datawarehouse\\run';
 

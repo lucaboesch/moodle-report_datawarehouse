@@ -25,7 +25,12 @@
 defined('MOODLE_INTERNAL') || die();
 global $ADMIN;
 
-$ADMIN->add('reports', new admin_externalpage('report_datawarehouse',
-    get_string('pluginname', 'report_datawarehouse'),
-    new moodle_url('/report/datawarehouse/index.php'),
-    'report/datawarehouse:view'));
+$ADMIN->add(
+    'reports',
+    new admin_externalpage(
+        'report_datawarehouse',
+        get_string('pluginname', 'report_datawarehouse'),
+        new moodle_url('/report/datawarehouse/index.php'),
+        'report/datawarehouse:view'
+    )
+);

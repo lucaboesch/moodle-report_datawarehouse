@@ -34,7 +34,6 @@ use core\event\base;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class run_enabled extends base {
-
     /**
      * Create event with strict parameters.
      *

@@ -33,7 +33,6 @@ use core\persistent;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backend extends persistent {
-
     /** Table name for the persistent. */
     const TABLE = 'report_datawarehouse_bkends';
 
@@ -112,5 +111,4 @@ class backend extends persistent {
 
         return $result;
     }
-
 }

@@ -31,7 +31,6 @@ namespace report_datawarehouse\local\form;
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class query extends \core\form\persistent {
-
     /** @var string Persistent class name. */
     protected static $persistentclass = 'report_datawarehouse\\query';
 
@@ -50,15 +49,23 @@ class query extends \core\form\persistent {
         $mform->addElement('textarea', 'description', get_string('description', 'report_datawarehouse'));
         $mform->setType('description', PARAM_TEXT);
 
-        $mform->addElement('textarea', 'querysql', get_string('querysql', 'report_datawarehouse'),
-            ['rows' => '25', 'cols' => '80']);
+        $mform->addElement(
+            'textarea',
+            'querysql',
+            get_string('querysql', 'report_datawarehouse'),
+            ['rows' => '25', 'cols' => '80']
+        );
         $mform->addRule('querysql', get_string('required'), 'required');
 
         $mform->addElement('selectyesno', 'enabled', get_string('enabled', 'report_datawarehouse'));
         $mform->setType('enabled', PARAM_INT);
 
-        $mform->addElement('static', 'note', get_string('note', 'report_datawarehouse'),
-            get_string('querynote', 'report_datawarehouse', $CFG->wwwroot));
+        $mform->addElement(
+            'static',
+            'note',
+            get_string('note', 'report_datawarehouse'),
+            get_string('querynote', 'report_datawarehouse', $CFG->wwwroot)
+        );
 
         $this->add_action_buttons();
 
