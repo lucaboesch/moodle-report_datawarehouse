@@ -255,16 +255,67 @@ function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $ti
     $filepath = $tempfolder . '/' . $filename;
 
     if (empty($backend->username) && empty($backend->password)) {
-        // PUT to a Pre-Authenticated Requests enabled Oracle Object Storage Bucket or custom API
-        $curl = new \curl();
-        $curl->setHeader('Content-Type: application/octet-stream');
+        // Clear PHPs aggressive file stat cache so we get the TRUE file size
+        clearstatcache(true, $filepath);
+        $filesize = filesize($filepath);
+
+        // Catch empty queries immediately before they confuse the Python API
+        if ($filesize === 0 || $filesize === false) {
+            throw new \moodle_exception("The generated CSV is completely empty. Please ensure your SQL query returns data.");
+        }
+
+        global $CFG;
+        $fp = fopen($filepath, 'rs');
+        $ch = curl_init($backend->url);
         
-        $curl->setopt([
-            'CURLOPT_CONNECTTIMEOUT' => 10,
-            'CURLOPT_TIMEOUT'        => 300,
+        // Configure native, memory-safe streaming
+        curl_setopt($ch, CURLOPT_PUT, true);
+        curl_setopt($ch, CURLOPT_INFILE, $fp);
+        curl_setopt($ch, CURLOPT_INFILESIZE, $filesize);
+        
+        // Passing 'Expect:' (empty) to stop cURL from sending the 'Expect: 100-continue' header,
+        // which often causes Python/uvicorn servers to truncate binary streams.
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/octet-stream',
+            'Expect:'
         ]);
         
-        $curl->put($backend->url, $filepath);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 300);
+        curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+
+        if (!empty($CFG->proxyhost)) {
+            curl_setopt($ch, CURLOPT_PROXY, $CFG->proxyhost);
+            if (!empty($CFG->proxyport)) {
+                curl_setopt($ch, CURLOPT_PROXYPORT, $CFG->proxyport);
+            }
+            if (!empty($CFG->proxyuser)) {
+                curl_setopt($ch, CURLOPT_PROXYUSERPWD, $CFG->proxyuser . ':' . $CFG->proxypassword);
+            }
+            if (!empty($CFG->proxytype)) {
+                curl_setopt($ch, CURLOPT_PROXYTYPE, $CFG->proxytype);
+            }
+        }
+
+        $response = curl_exec($ch);
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        
+        if (curl_errno($ch)) {
+            $errormsg = curl_error($ch);
+            curl_close($ch); // For PHP under 8.0
+            fclose($fp);
+            throw new \moodle_exception("cURL network error: " . $errormsg);
+        } 
+        
+        if ($httpcode >= 400) {
+            curl_close($ch); // For PHP under 8.0
+            fclose($fp);
+            throw new \moodle_exception("API rejected upload. HTTP Code: " . $httpcode . " Response: " . $response);
+        }
+        
+        curl_close($ch); // For PHP under 8.0
+        fclose($fp);
 
     } else {
         // REST to a REST enabled table in an Oracle Autonomous Data Warehouse.
