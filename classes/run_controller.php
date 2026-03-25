@@ -73,6 +73,11 @@ class run_controller {
      */
     const ACTION_RUN = 'run';
 
+    /**
+     * Download action.
+     */
+    const ACTION_DOWNLOAD = 'download';
+
 
     /**
      * Locally cached $OUTPUT object.
@@ -116,6 +121,10 @@ class run_controller {
 
             case self::ACTION_RUN:
                 $this->run(required_param('id', PARAM_INT));
+                break;
+
+            case self::ACTION_DOWNLOAD:
+                $this->download(required_param('id', PARAM_INT));
                 break;
 
             case self::ACTION_VIEW:
@@ -330,8 +339,28 @@ class run_controller {
      * @throws \moodle_exception
      */
     protected function run($runid) {
+        require_sesskey();
+        if (!has_capability('report/datawarehouse:manageruns', \context_system::instance())) {
+            notification::warning(get_string('canteditrun', 'report_datawarehouse'));
+            redirect(new \moodle_url('/report/datawarehouse/index.php'));
+        }
         report_datawarehouse_execute_run($runid);
         redirect(new \moodle_url('/report/datawarehouse/index.php'));
+    }
+
+    /**
+     * Execute download action.
+     *
+     * @param int $runid the run id
+     * @throws \dml_exception
+     * @throws \moodle_exception
+     */
+    protected function download($runid) {
+        if (!has_capability('report/datawarehouse:manageruns', \context_system::instance())) {
+            notification::warning(get_string('canteditrun', 'report_datawarehouse'));
+            redirect(new \moodle_url('/report/datawarehouse/index.php'));
+        }
+        report_datawarehouse_download_run($runid);
     }
 
     /**
