@@ -22,8 +22,6 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Serve the requested file for the report_datawarehouse plugin.
  *
@@ -45,7 +43,7 @@ function report_datawarehouse_pluginfile(
     bool $forcedownload,
     array $options
 ): bool {
-    
+
     // Dynamically handle login requirements based on the context level requested.
     if ($context->contextlevel == CONTEXT_MODULE) {
         require_login($course, true, $cm);
@@ -56,10 +54,15 @@ function report_datawarehouse_pluginfile(
     }
 
     // Check permissions against the specific context the file belongs to.
-    if (!has_any_capability([
-        'report/datawarehouse:view',
-        'report/datawarehouse:viewfiles',
-    ], $context)) {
+    if (
+        !has_any_capability(
+            [
+                'report/datawarehouse:view',
+                'report/datawarehouse:viewfiles',
+            ],
+            $context
+        )
+    ) {
         return false;
     }
 

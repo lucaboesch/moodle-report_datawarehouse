@@ -149,7 +149,13 @@ function report_datawarehouse_download_run($runid) {
     $timenow = time();
     $run = $DB->get_record('report_datawarehouse_runs', ['id' => $runid]);
 
-    list($itemid, $filename, $csvtimestamp) = report_datawarehouse_generate_csv($run->queryid, $run->backendid, $timenow, $run->cmid, $run->courseid);
+    [$itemid, $filename, $csvtimestamp] = report_datawarehouse_generate_csv(
+        $run->queryid,
+        $run->backendid,
+        $timenow,
+        $run->cmid,
+        $run->courseid
+    );
 
     $contextid = ($run->cmid > 0) ? \context_module::instance($run->cmid)->id : \context_system::instance()->id;
 
@@ -255,11 +261,11 @@ function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $ti
     $filepath = $tempfolder . '/' . $filename;
 
     if (empty($backend->username) && empty($backend->password)) {
-        // Clear PHPs aggressive file stat cache so we get the TRUE file size
+        // Clear PHPs aggressive file stat cache so we get the TRUE file size.
         clearstatcache(true, $filepath);
         $filesize = filesize($filepath);
 
-        // Catch empty queries immediately before they confuse the Python API
+        // Catch empty queries immediately before they confuse the Python API.
         if ($filesize === 0 || $filesize === false) {
             throw new \moodle_exception("The generated CSV is completely empty. Please ensure your SQL query returns data.");
         }
@@ -267,19 +273,19 @@ function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $ti
         global $CFG;
         $fp = fopen($filepath, 'rs');
         $ch = curl_init($backend->url);
-        
-        // Configure native, memory-safe streaming
+
+        // Configure native, memory-safe streaming.
         curl_setopt($ch, CURLOPT_PUT, true);
         curl_setopt($ch, CURLOPT_INFILE, $fp);
         curl_setopt($ch, CURLOPT_INFILESIZE, $filesize);
-        
+
         // Passing 'Expect:' (empty) to stop cURL from sending the 'Expect: 100-continue' header,
         // which often causes Python/uvicorn servers to truncate binary streams.
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/octet-stream',
-            'Expect:'
+            'Expect:',
         ]);
-        
+
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
         curl_setopt($ch, CURLOPT_TIMEOUT, 300);
@@ -300,23 +306,22 @@ function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $ti
 
         $response = curl_exec($ch);
         $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        
+
         if (curl_errno($ch)) {
             $errormsg = curl_error($ch);
-            curl_close($ch); // For PHP under 8.0
+            curl_close($ch); // For PHP under 8.0.
             fclose($fp);
             throw new \moodle_exception("cURL network error: " . $errormsg);
-        } 
-        
+        }
+
         if ($httpcode >= 400) {
-            curl_close($ch); // For PHP under 8.0
+            curl_close($ch); // For PHP under 8.0.
             fclose($fp);
             throw new \moodle_exception("API rejected upload. HTTP Code: " . $httpcode . " Response: " . $response);
         }
-        
-        curl_close($ch); // For PHP under 8.0
-        fclose($fp);
 
+        curl_close($ch); // For PHP under 8.0.
+        fclose($fp);
     } else {
         // REST to a REST enabled table in an Oracle Autonomous Data Warehouse.
         $fp = fopen($filepath, 'r');
@@ -406,21 +411,21 @@ function report_datawarehouse_get_archive_times($report) {
     if ($report->runable == 'manual' || $report->singlerow) {
         return [];
     }
-    
-    // Refactored from `glob` on physical disk to retrieving files via Moodle's File API
+
+    // Refactored from `glob` on physical disk to retrieving files via Moodle's File API.
     $fs = get_file_storage();
-    $context = \context_system::instance(); 
+    $context = \context_system::instance();
     $files = $fs->get_area_files($context->id, 'report_datawarehouse', 'data', $report->id, 'timecreated DESC', false);
-    
+
     $archivetimes = [];
     foreach ($files as $file) {
         $filename = $file->get_filename();
-        // Updated regex to handle the standard timestamp structure 
+        // Updated regex to handle the standard timestamp structure.
         if (preg_match('/-(\d{10})-/i', $filename, $matches)) {
             $archivetimes[] = (int)$matches[1];
         }
     }
-    
+
     rsort($archivetimes);
     return array_unique($archivetimes);
 }
@@ -1083,14 +1088,14 @@ function report_datawarehouse_delete_old_temp_files($upto) {
 
     $count = 0;
     $comparison = date('Ymd-His', $upto) . '.csv';
-    
-    // Safely iterate through the actual Moodle temp folder
+
+    // Safely iterate through the actual Moodle temp folder.
     $tempfolder = make_temp_directory('report_datawarehouse');
     $iterator = new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator($tempfolder, RecursiveDirectoryIterator::SKIP_DOTS),
         RecursiveIteratorIterator::CHILD_FIRST
     );
-    
+
     foreach ($iterator as $file) {
         if ($file->isFile() && $file->getExtension() === 'csv') {
             if ($file->getFilename() < $comparison) {
