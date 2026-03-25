@@ -149,7 +149,9 @@ function report_datawarehouse_download_run($runid) {
     $timenow = time();
     $run = $DB->get_record('report_datawarehouse_runs', ['id' => $runid]);
 
-    [$itemid, $filename, $csvtimestamp] = report_datawarehouse_generate_csv($run->queryid, $run->backendid, $timenow, $run->cmid, $run->courseid);
+    [$itemid, $filename, $csvtimestamp] = report_datawarehouse_generate_csv(
+        $run->queryid, $run->backendid, $timenow, $run->cmid, $run->courseid, false
+    );
 
     $contextid = ($run->cmid > 0) ? \context_module::instance($run->cmid)->id : \context_system::instance()->id;
 
@@ -174,13 +176,14 @@ function report_datawarehouse_download_run($runid) {
  * @param int $timenow A timestamp
  * @param int $cmid The course module id
  * @param int $courseid The course id
+ * @param bool $upload Whether to upload to the backend after generating. Default true.
  * @return array A tuple with itemid, filename, and timestamp
  * @throws coding_exception
  * @throws dml_exception
  * @throws file_exception
  * @throws stored_file_creation_exception
  */
-function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $timenow, int $cmid, int $courseid) {
+function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $timenow, int $cmid, int $courseid, bool $upload = true) {
     global $DB;
     $starttime = microtime(true);
 
@@ -250,6 +253,10 @@ function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $ti
         'filename' => $filename,
     ];
     $fs->create_file_from_pathname($filerecord, $tempfolder . '/' . $filename);
+
+    if (!$upload) {
+        return [$itemid, $filename, $csvtimestamp];
+    }
 
     $backend = $DB->get_record('report_datawarehouse_bkends', ['id' => $backendid]);
     $filepath = $tempfolder . '/' . $filename;
