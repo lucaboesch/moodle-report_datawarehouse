@@ -32,11 +32,11 @@ global $CFG;
 define('REPORT_DATAWAREHOUSE_LIMIT_EXCEEDED_MARKER', '-- ROW LIMIT EXCEEDED --');
 
 /**
- * Execute a query
+ * Execute a query.
  *
- * @param string $sql the sql
- * @param array|null $params the params
- * @param int|null $limitnum the result limit
+ * @param string $sql the sql.
+ * @param array|null $params the params.
+ * @param int|null $limitnum the result limit.
  * @return moodle_recordset
  * @throws dml_exception
  */
@@ -65,10 +65,10 @@ function report_datawarehouse_execute_query($sql, $params = null, $limitnum = nu
 /**
  * A function to substitute the time and user tokens.
  *
- * @param \stdClass $query A query object
- * @param int $cmid The course module
- * @param int $courseid The course
- * @param string $filename The file name
+ * @param \stdClass $query A query object.
+ * @param int $cmid The course module.
+ * @param int $courseid The course.
+ * @param string $filename The file name.
  * @return array|string|string[]
  */
 function report_datawarehouse_prepare_sql($query, int $cmid, int $courseid, $filename = '') {
@@ -255,11 +255,11 @@ function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $ti
     $filepath = $tempfolder . '/' . $filename;
 
     if (empty($backend->username) && empty($backend->password)) {
-        // Clear PHPs aggressive file stat cache so we get the TRUE file size
+        // Clear PHPs aggressive file stat cache so we get the TRUE file size.
         clearstatcache(true, $filepath);
         $filesize = filesize($filepath);
 
-        // Catch empty queries immediately before they confuse the Python API
+        // Catch empty queries immediately before they confuse the Python API.
         if ($filesize === 0 || $filesize === false) {
             throw new \moodle_exception("The generated CSV is completely empty. Please ensure your SQL query returns data.");
         }
@@ -268,7 +268,7 @@ function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $ti
         $fp = fopen($filepath, 'rs');
         $ch = curl_init($backend->url);
 
-        // Configure native, memory-safe streaming
+        // Configure native, memory-safe streaming.
         curl_setopt($ch, CURLOPT_PUT, true);
         curl_setopt($ch, CURLOPT_INFILE, $fp);
         curl_setopt($ch, CURLOPT_INFILESIZE, $filesize);
@@ -303,18 +303,18 @@ function report_datawarehouse_generate_csv(int $queryid, int $backendid, int $ti
 
         if (curl_errno($ch)) {
             $errormsg = curl_error($ch);
-            curl_close($ch); // For PHP under 8.0
+            curl_close($ch); // For PHP under 8.0.
             fclose($fp);
             throw new \moodle_exception("cURL network error: " . $errormsg);
         }
 
         if ($httpcode >= 400) {
-            curl_close($ch); // For PHP under 8.0
+            curl_close($ch); // For PHP under 8.0.
             fclose($fp);
             throw new \moodle_exception("API rejected upload. HTTP Code: " . $httpcode . " Response: " . $response);
         }
 
-        curl_close($ch); // For PHP under 8.0
+        curl_close($ch); // For PHP under 8.0.
         fclose($fp);
     } else {
         // REST to a REST enabled table in an Oracle Autonomous Data Warehouse.
@@ -385,7 +385,7 @@ function report_datawarehouse_scheduled_csv_name($reportid, $timestart) {
 }
 
 /**
- * Get the accumulate.csv file name and 0 of a report
+ * Get the accumulate.csv file name and 0 of a report.
  *
  * @param int $reportid The reportid.
  * @return array
@@ -406,7 +406,7 @@ function report_datawarehouse_get_archive_times($report) {
         return [];
     }
 
-    // Refactored from `glob` on physical disk to retrieving files via Moodle's File API
+    // Refactored from `glob` on physical disk to retrieving files via Moodle's File API.
     $fs = get_file_storage();
     $context = \context_system::instance();
     $files = $fs->get_area_files($context->id, 'report_datawarehouse', 'data', $report->id, 'timecreated DESC', false);
@@ -414,7 +414,7 @@ function report_datawarehouse_get_archive_times($report) {
     $archivetimes = [];
     foreach ($files as $file) {
         $filename = $file->get_filename();
-        // Updated regex to handle the standard timestamp structure
+        // Updated regex to handle the standard timestamp structure.
         if (preg_match('/-(\d{10})-/i', $filename, $matches)) {
             $archivetimes[] = (int)$matches[1];
         }
@@ -1073,9 +1073,9 @@ function report_datawarehouse_get_starts($report, $timenow) {
 }
 
 /**
- * Delete old temp files
+ * Delete old temp files.
  *
- * @param int $upto a time stamp
+ * @param int $upto a time stamp.
  * @return int|void
  */
 function report_datawarehouse_delete_old_temp_files($upto) {
@@ -1083,7 +1083,7 @@ function report_datawarehouse_delete_old_temp_files($upto) {
     $count = 0;
     $comparison = date('Ymd-His', $upto) . '.csv';
 
-    // Safely iterate through the actual Moodle temp folder
+    // Safely iterate through the actual Moodle temp folder.
     $tempfolder = make_temp_directory('report_datawarehouse');
     $iterator = new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator($tempfolder, RecursiveDirectoryIterator::SKIP_DOTS),
@@ -1136,7 +1136,7 @@ function report_datawarehouse_validate_users($userids, $capability) {
 }
 
 /**
- * Get the 'no data' message
+ * Get the 'no data' message.
  *
  * @param object $report report settings from the database.
  * @return stdClass
@@ -1166,10 +1166,10 @@ function report_datawarehouse_get_message_no_data($report) {
 }
 
 /**
- * Get the appropriate message
+ * Get the appropriate message.
  *
  * @param object $report report settings from the database.
- * @param string $csvfilename the csv file name
+ * @param string $csvfilename the csv file name.
  * @return stdClass
  * @throws coding_exception
  * @throws moodle_exception
@@ -1244,10 +1244,10 @@ function report_datawarehouse_get_message($report, $csvfilename) {
 }
 
 /**
- * Send out the email report
+ * Send out the email report.
  *
  * @param object $report report settings from the database.
- * @param string|null $csvfilename the csv file name
+ * @param string|null $csvfilename the csv file name.
  * @throws coding_exception
  * @throws dml_exception
  * @throws moodle_exception
@@ -1278,7 +1278,7 @@ function report_datawarehouse_email_report($report, $csvfilename = null) {
 }
 
 /**
- * Get ready to run daily reports
+ * Get ready to run daily reports.
  *
  * @param int $timenow a timestamp.
  * @return array
@@ -1347,7 +1347,7 @@ function report_datawarehouse_is_daily_report_ready($report, $timenow) {
 }
 
 /**
- * Get the category options
+ * Get the category options.
  *
  * @return array
  * @throws dml_exception
@@ -1361,8 +1361,8 @@ function report_datawarehouse_category_options() {
  * Copies a csv file to an optional custom directory or file path.
  *
  * @param object $report report settings from the database.
- * @param integer $timenow a time stamp
- * @param string|null $csvfilename the csv file name
+ * @param integer $timenow a time stamp.
+ * @param string|null $csvfilename the csv file name.
  */
 function report_datawarehouse_copy_csv_to_customdir($report, $timenow, $csvfilename = null) {
 
@@ -1406,7 +1406,7 @@ function report_datawarehouse_plain_text_report_name($report): string {
 /**
  * Returns all reports for a given type sorted by report 'displayname'.
  *
- * @param array $records relevant rows from report_datawarehouse_queries
+ * @param array $records relevant rows from report_datawarehouse_queries.
  * @return array
  */
 function report_datawarehouse_sort_reports_by_displayname(array $records): array {
@@ -1425,8 +1425,8 @@ function report_datawarehouse_sort_reports_by_displayname(array $records): array
  * Writes a quiz report datawarehouse file.
  *
  * @param stdClass|array $filerecord contains itemid, filepath, filename and optionally other
- *      attributes of the new file
- * @param string $content the content of the new file
+ *      attributes of the new file.
+ * @param string $content the content of the new file.
  * @return bool
  * @throws file_exception
  * @throws stored_file_creation_exception
@@ -1444,8 +1444,8 @@ function report_datawarehouse_write_file(stdClass|array $filerecord, string $con
 /**
  * Update a run lastrun entry.
  *
- * @param int $runid the run id
- * @param int $timestamp a time stamp
+ * @param int $runid the run id.
+ * @param int $timestamp a time stamp.
  * @return void
  * @throws dml_exception
  */
