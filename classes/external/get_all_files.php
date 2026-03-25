@@ -73,16 +73,16 @@ class get_all_files extends \external_api {
                  WHERE component = :component 
                    AND filearea = :filearea 
                    AND filename != '.'";
-        
+
         $contextids = $DB->get_fieldset_sql($sql, [
-            'component' => $component, 
-            'filearea' => $filearea
+            'component' => $component,
+            'filearea' => $filearea,
         ]);
 
         // Iterate over found contexts, check capability, and fetch files.
         foreach ($contextids as $cid) {
             $ctx = \context::instance_by_id($cid, IGNORE_MISSING);
-            
+
             // Only pull files from this context if the user has the capability to view them.
             if ($ctx && has_capability('report/datawarehouse:viewfiles', $ctx)) {
                 $contextfiles = \core_external\util::get_area_files($cid, $component, $filearea, false);

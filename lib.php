@@ -45,7 +45,7 @@ function report_datawarehouse_pluginfile(
     bool $forcedownload,
     array $options
 ): bool {
-    
+
     // Dynamically handle login requirements based on the context level requested.
     if ($context->contextlevel == CONTEXT_MODULE) {
         require_login($course, true, $cm);
@@ -56,10 +56,12 @@ function report_datawarehouse_pluginfile(
     }
 
     // Check permissions against the specific context the file belongs to.
-    if (!has_any_capability([
+    if (
+        !has_any_capability([
         'report/datawarehouse:view',
         'report/datawarehouse:viewfiles',
-    ], $context)) {
+        ], $context)
+    ) {
         return false;
     }
 

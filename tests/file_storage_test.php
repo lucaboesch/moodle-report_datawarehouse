@@ -61,7 +61,7 @@ final class file_storage_test extends externallib_advanced_testcase {
         $context = \context_system::instance()->id;
         $component = 'report_datawarehouse';
         $filearea = 'data';
-        $newitemid = get_file_itemid() + 1;
+        $newitemid = 1;
         $timemodified = 102030405;
         $content = 'File content';
         $filesize = strlen($content);
@@ -78,7 +78,8 @@ final class file_storage_test extends externallib_advanced_testcase {
         ];
 
         // Create a file and save it.
-        write_datawarehouse_file($filerecord, $content);
+        $fs = get_file_storage();
+        $fs->create_file_from_string($filerecord, $content);
 
         // Control that it exists.
         $files = $DB->get_records('files', ['component' => $component, 'filearea' => $filearea,
