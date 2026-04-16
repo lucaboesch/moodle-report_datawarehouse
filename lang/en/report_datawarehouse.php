@@ -84,6 +84,7 @@ $string['norunsavailable'] = 'No runs available';
 $string['note'] = 'Notes';
 $string['password'] = 'Password';
 $string['pluginname'] = 'Data warehouse reports';
+$string['privacy:metadata'] = 'The Data warehouse reports plugin does not store any personal data.';
 $string['query'] = 'Query';
 $string['querydeleted'] = 'The data warehouse report query has successfully been deleted';
 $string['querynote'] = '<ul>
